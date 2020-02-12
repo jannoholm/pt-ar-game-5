@@ -45,6 +45,15 @@ public class DbAccess {
 		}
 	}
 
+	public boolean isInternalPlayer(String nickname) {
+		Player player = db.findById(nickname, Player.class);
+		if (player != null) {
+			return player.getInternal();
+		}
+		log.warn("Player does not exist in the DB, fail safe to internal");
+		return true;
+	}
+
 	public void convertToInternal(String nickname) {
 		Player player = db.findById(nickname, Player.class);
 		if (player != null) {
@@ -69,6 +78,10 @@ public class DbAccess {
 
 	public void addGameResult(GameResult gameResult) {
 		db.insert(gameResult);
+	}
+
+	public List<GameResult> getGameResults() {
+		return db.findAll(GameResult.class);
 	}
 
 }

@@ -41,7 +41,7 @@ public class PlayerController {
 
 		if (player.getNickname().equalsIgnoreCase("DMO")) {
 			player.setInternal(true);
-		} else if (player.getInternal() == null) {
+		} else if (player.getInternal()) {
 			player.setInternal(false);
 		}
 

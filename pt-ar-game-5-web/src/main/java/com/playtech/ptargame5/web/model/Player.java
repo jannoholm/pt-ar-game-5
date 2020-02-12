@@ -10,7 +10,7 @@ public class Player {
 	private String nickname;
 	private String name;
 	private String email;
-	private Boolean internal;
+	private boolean internal;
 	private PlayerInterests interests;
 
 	public String getNickname() {
@@ -37,11 +37,11 @@ public class Player {
 		this.email = email;
 	}
 
-	public Boolean getInternal() {
+	public boolean getInternal() {
 		return internal;
 	}
 
-	public void setInternal(Boolean internal) {
+	public void setInternal(boolean internal) {
 		this.internal = internal;
 	}
 
