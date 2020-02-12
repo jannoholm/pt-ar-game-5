@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "2928b1fb-a1da-4b0e-aef5-35d7f528430f",
+		"name": "TriviaSpree",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/leaderboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/leaderboard",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"leaderboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/player",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Alice\",\n    \"nickname\": \"AAL\",\n    \"email\": \"example@example.com\",\n    \"interests\": {\n        \"consent\": true,\n        \"development\": true,\n        \"projectManagement\": true,\n        \"analysis\": true,\n        \"devOps\": true,\n        \"qa\": true,\n        \"adminHr\": true\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/player",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/nicknames",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/player/internal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/player/internal?nickname=AAL",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"player",
+						"internal"
+					],
+					"query": [
+						{
+							"key": "nickname",
+							"value": "AAL"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/private/players",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/private/players",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"private",
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/private/game",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nickname\": \"ALE\",\n\t\"questionsAttempted\": 5,\n\t\"correctAnswers\": 10,\n\t\"totalScore\": 123\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/private/game",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"private",
+						"game"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/private/questions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/private/questions",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"private",
+						"questions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

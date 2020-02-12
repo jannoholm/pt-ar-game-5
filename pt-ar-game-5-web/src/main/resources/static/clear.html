@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Clear cookies</title>
+</head>
+
+<body>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            Cookies.remove("nickname");
+            alert("Cookie cleared");
+        });
+
+    </script>
+
+
+</body>
+
+</html>
