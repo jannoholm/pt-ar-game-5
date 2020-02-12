@@ -7,6 +7,7 @@ public class PlayerInterests {
 	private Boolean projectManagement;
 	private Boolean analysis;
 	private Boolean devOps;
+	private Boolean infra;
 	private Boolean qa;
 	private Boolean adminHr;
 
@@ -14,7 +15,7 @@ public class PlayerInterests {
 		return consent;
 	}
 
-	public void setConcent(Boolean consent) {
+	public void setConsent(Boolean consent) {
 		this.consent = consent;
 	}
 
@@ -50,6 +51,14 @@ public class PlayerInterests {
 		this.devOps = devOps;
 	}
 
+	public Boolean getInfra() {
+		return infra;
+	}
+
+	public void setInfra(Boolean infra) {
+		this.infra = infra;
+	}
+
 	public Boolean getQa() {
 		return qa;
 	}
@@ -69,7 +78,7 @@ public class PlayerInterests {
 	@Override
 	public String toString() {
 		return "PlayerInterests [consent=" + consent + ", development=" + development + ", projectManagement="
-				+ projectManagement + ", analysis=" + analysis + ", devOps=" + devOps + ", qa=" + qa + ", adminHr="
-				+ adminHr + "]";
+				+ projectManagement + ", analysis=" + analysis + ", devOps=" + devOps + ", infra=" + infra + ", qa="
+				+ qa + ", adminHr=" + adminHr + "]";
 	}
 }

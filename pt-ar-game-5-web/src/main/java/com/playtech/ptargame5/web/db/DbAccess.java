@@ -18,7 +18,7 @@ import io.jsondb.JsonDBTemplate;
 public class DbAccess {
 
 	private static final Logger log = LoggerFactory.getLogger(DbAccess.class);
-	private static JsonDBTemplate db = new JsonDBTemplate("ptkahoot.db", "com.playtech.ptargame5.web.model");
+	private static JsonDBTemplate db = new JsonDBTemplate("triviaspree.db", "com.playtech.ptargame5.web.model");
 
 	@PostConstruct
 	private void init() {

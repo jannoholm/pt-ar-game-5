@@ -37,7 +37,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Alice\",\n    \"nickname\": \"AAL\",\n    \"email\": \"example@example.com\",\n    \"interests\": {\n        \"consent\": true,\n        \"development\": true,\n        \"projectManagement\": true,\n        \"analysis\": true,\n        \"devOps\": true,\n        \"qa\": true,\n        \"adminHr\": true\n    }\n}",
+					"raw": "{\n    \"name\": \"Alice\",\n    \"nickname\": \"AAL\",\n    \"email\": \"example@example.com\",\n    \"interests\": {\n        \"consent\": true,\n        \"development\": true,\n        \"projectManagement\": true,\n        \"analysis\": true,\n        \"devOps\": true,\n        \"infra\": true,\n        \"qa\": true,\n        \"adminHr\": true\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
