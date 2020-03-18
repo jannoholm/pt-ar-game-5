@@ -13,4 +13,9 @@ public class LeaderboardTable {
 	public void setData(List<LeaderboardEntry> data) {
 		this.data = data;
 	}
+
+	@Override
+	public String toString() {
+		return "LeaderboardTable [data=" + data + "]";
+	}
 }
