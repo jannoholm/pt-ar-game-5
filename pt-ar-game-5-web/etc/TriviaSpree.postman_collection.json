@@ -63,7 +63,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "{{baseurl}}/api/nicknames",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"nicknames"
+					]
 				}
 			},
 			"response": []
@@ -126,7 +133,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"nickname\": \"ALE\",\n\t\"questionsAttempted\": 5,\n\t\"correctAnswers\": 10,\n\t\"totalScore\": 123\n}",
+					"raw": "{\n\t\"nickname\": \"AAL\",\n\t\"questionsAttempted\": 5,\n\t\"correctAnswers\": 10,\n\t\"totalScore\": 140,\n\t\"answers\": [\n\t\t{\"question\": \"What is the first letter of the alphabet?\", \"playerInput\": \"A\"},\n\t\t{\"question\": \"WWhose nose grew longer every time he lied?\", \"playerInput\": \"Pinocchio\"},\n\t\t{\"question\": \"What is the name of the fairy in Peter Pan?\", \"playerInput\": \"Tinkerbell\"},\n\t\t{\"question\": \"If you freeze water, what do you get?\", \"playerInput\": \"Ice\"}\n\t]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -149,6 +156,25 @@
 		},
 		{
 			"name": "/api/private/questions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/private/questions",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"private",
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/private/questions/stats",
 			"request": {
 				"method": "GET",
 				"header": [],

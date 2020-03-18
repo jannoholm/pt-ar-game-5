@@ -1,5 +1,7 @@
 package com.playtech.ptargame5.web.model;
 
+import java.util.List;
+
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
@@ -12,6 +14,7 @@ public class GameResult {
 	private Integer questionsAttempted;
 	private Integer correctAnswers;
 	private Integer totalScore;
+	private List<GameResultAnswer> answers;
 
 	public String getGameId() {
 		return gameId;
@@ -53,9 +56,17 @@ public class GameResult {
 		this.totalScore = totalScore;
 	}
 
+	public List<GameResultAnswer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<GameResultAnswer> answers) {
+		this.answers = answers;
+	}
+
 	@Override
 	public String toString() {
 		return "GameResult [gameId=" + gameId + ", nickname=" + nickname + ", questionsAttempted=" + questionsAttempted
-				+ ", correctAnswers=" + correctAnswers + ", totalScore=" + totalScore + "]";
+				+ ", correctAnswers=" + correctAnswers + ", totalScore=" + totalScore + ", answers=" + answers + "]";
 	}
 }
