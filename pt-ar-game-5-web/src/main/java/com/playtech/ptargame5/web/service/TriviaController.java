@@ -40,6 +40,9 @@ public class TriviaController {
 		Map<String, Map<String, Integer>> stats = new HashMap<>();
 
 		for (GameResult game : games) {
+			if(game.getAnswers() == null) {
+				continue;
+			}
 			for (GameResultAnswer answer : game.getAnswers()) {
 				stats.putIfAbsent(answer.getQuestion(), new HashMap<>());
 				int count = stats.get(answer.getQuestion()).getOrDefault(answer.getPlayerInput(), 0);
