@@ -11,6 +11,7 @@ public class TriviaQuestion {
 	@Id
 	private String question;
 	private Integer level;
+	private String category;
 	private String correct;
 	private List<String> answers;
 
@@ -28,6 +29,14 @@ public class TriviaQuestion {
 
 	public void setLevel(Integer level) {
 		this.level = level;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getCorrect() {
@@ -48,7 +57,7 @@ public class TriviaQuestion {
 
 	@Override
 	public String toString() {
-		return "TriviaQuestion [question=" + question + ", level=" + level + ", correct=" + correct + ", answers="
-				+ answers + "]";
+		return "TriviaQuestion [question=" + question + ", level=" + level + ", category=" + category + ", correct="
+				+ correct + ", answers=" + answers + "]";
 	}
 }
