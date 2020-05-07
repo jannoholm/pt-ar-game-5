@@ -133,7 +133,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"nickname\": \"AAL\",\n\t\"questionsAttempted\": 5,\n\t\"correctAnswers\": 10,\n\t\"totalScore\": 140,\n\t\"answers\": [\n\t\t{\"question\": \"What is the first letter of the alphabet?\", \"playerInput\": \"A\"},\n\t\t{\"question\": \"WWhose nose grew longer every time he lied?\", \"playerInput\": \"Pinocchio\"},\n\t\t{\"question\": \"What is the name of the fairy in Peter Pan?\", \"playerInput\": \"Tinkerbell\"},\n\t\t{\"question\": \"If you freeze water, what do you get?\", \"playerInput\": \"Ice\"}\n\t]\n}",
+					"raw": "{\n\t\"nickname\": \"AAL\",\n\t\"questionsAttempted\": 5,\n\t\"correctAnswers\": 10,\n\t\"totalScore\": 140,\n\t\"answers\": [\n\t\t{\"question\": \"What is the first letter of the alphabet?\", \"playerInput\": \"A\", \"timeTaken\": 5000},\n\t\t{\"question\": \"WWhose nose grew longer every time he lied?\", \"playerInput\": \"Pinocchio\", \"timeTaken\": 10000},\n\t\t{\"question\": \"What is the name of the fairy in Peter Pan?\", \"playerInput\": \"Tinkerbell\", \"timeTaken\": 2500},\n\t\t{\"question\": \"If you freeze water, what do you get?\", \"playerInput\": \"Ice\", \"timeTaken\": 1337}\n\t]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -179,14 +179,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseurl}}/api/private/questions",
+					"raw": "{{baseurl}}/api/private/questions/stats",
 					"host": [
 						"{{baseurl}}"
 					],
 					"path": [
 						"api",
 						"private",
-						"questions"
+						"questions",
+						"stats"
 					]
 				}
 			},
