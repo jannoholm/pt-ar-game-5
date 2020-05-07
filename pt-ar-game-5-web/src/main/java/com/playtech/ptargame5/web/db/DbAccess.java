@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.playtech.ptargame5.web.model.GameResult;
+import com.playtech.ptargame5.web.model.GuestTriviaQuestion;
 import com.playtech.ptargame5.web.model.Player;
 import com.playtech.ptargame5.web.model.TriviaQuestion;
 
@@ -33,6 +34,10 @@ public class DbAccess {
 		if (!db.collectionExists(GameResult.class)) {
 			db.createCollection(GameResult.class);
 			log.info("Created GameResult collection db");
+		}
+		if (!db.collectionExists(GuestTriviaQuestion.class)) {
+			db.createCollection(GuestTriviaQuestion.class);
+			log.info("Created GuestTriviaQuestion collection db");
 		}
 	}
 
@@ -74,6 +79,10 @@ public class DbAccess {
 
 	public List<TriviaQuestion> getQuestions() {
 		return db.findAll(TriviaQuestion.class);
+	}
+
+	public void addGuestQuestion(GuestTriviaQuestion guestQuestion) {
+		db.insert(guestQuestion);
 	}
 
 	public void addGameResult(GameResult gameResult) {

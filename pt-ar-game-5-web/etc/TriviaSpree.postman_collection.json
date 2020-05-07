@@ -76,6 +76,34 @@
 			"response": []
 		},
 		{
+			"name": "/api/questions/guestquestion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"question\": \"The second letter in the alphabet is:\",\n    \"nickname\": \"ASD\",\n    \"correct\": \"B\",\n    \"answers\": [\n        \"A\",\n        \"B\",\n        \"C\",\n        \"D\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/questions/guestquestion",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"questions",
+						"guestquestion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/api/player/internal",
 			"request": {
 				"method": "GET",
