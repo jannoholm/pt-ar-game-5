@@ -66,13 +66,11 @@ public class TriviaController {
 	public GuestTriviaQuestion addGuestQuestion(@RequestBody GuestTriviaQuestion guestQuestion) {
 
 		log.info("Received guest question: " + guestQuestion);
-
-		Assert.hasText(guestQuestion.getNickname(), "Nickname is required");
-		Assert.isNull(guestQuestion.getCategory(), "Category is not needed");
-		Assert.isNull(guestQuestion.getLevel(), "Level is not needed");
 		
 		Assert.isTrue(guestQuestion.getQuestion().length() < 400, "Question is too long");
-		Assert.isTrue(guestQuestion.getCorrect().length() < 400, "Answer is too long");
+		for(String correct : guestQuestion.getCorrect()) {
+			Assert.isTrue(correct.length() < 400, "Correct answer is too long");	
+		}
 		for(String answer : guestQuestion.getAnswers()) {
 			Assert.isTrue(answer.length() < 400, "Answer is too long");	
 		}

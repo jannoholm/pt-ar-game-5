@@ -12,7 +12,7 @@ public class TriviaQuestion {
 	private String question;
 	private Integer level;
 	private String category;
-	private String correct;
+	private List<String> correct;
 	private List<String> answers;
 
 	public String getQuestion() {
@@ -39,11 +39,11 @@ public class TriviaQuestion {
 		this.category = category;
 	}
 
-	public String getCorrect() {
+	public List<String> getCorrect() {
 		return correct;
 	}
 
-	public void setCorrect(String correct) {
+	public void setCorrect(List<String> correct) {
 		this.correct = correct;
 	}
 

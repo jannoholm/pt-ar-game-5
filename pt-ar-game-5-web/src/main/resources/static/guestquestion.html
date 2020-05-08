@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="favicon.ico">
+
+  <title>Trivia Spree Leaderboard</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+  <style type="text/css">
+    body {
+      padding-top: 5rem;
+      /* color: #fff; */
+    }
+
+    .starter-template {
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    .bg {
+      /* The image used */
+      background-image: url("bg-leaderboard.jpg");
+
+      /* Full height */
+      height: 100%;
+
+
+      /* Center and scale the image nicely */
+      background-color: #09060F;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center;
+      background-size: contain;
+      opacity: .8;
+    }
+  </style>
+
+</head>
+
+<body class="bg">
+  <div class="row mb-5">
+    <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
+  </div>
+  <div class="row text-light">
+    <div class="col-1 col-xl-3"></div>
+    <div class="col-10 col-xl-6">
+      <form id="guestQuestionForm">
+        <div class="form-group">
+          <label for="quesionInput" class="text-light">Your trivia question:</label>
+          <input type="text" class="form-control" id="quesion_input" placeholder="Enter question">
+        </div>
+        <div class="row">
+          <div class="col-10"><label>Answers</label></div>
+          <div class="col-2 text-center"><label>Correct</label></div>
+        </div>
+        <div class="row justify-content-between">
+          <div class="form-group col-9">
+            <input type="text" class="form-control" id="answer_1_input" placeholder="Answer #1">
+          </div>
+          <div class="form-check col-3 text-right">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="answer_1_radio" id="answer_1_radio_correct" autocomplete="off" checked>YES
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="answer_1_radio" id="answer_1_radio_wrong" autocomplete="off">NO
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-9">
+            <input type="text" class="form-control" id="answer_2_input" placeholder="Answer #2">
+          </div>
+          <div class="form-check col-3 text-right">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary">
+                <input type="radio" name="answer_2_radio" id="answer_2_radio_correct" autocomplete="off">YES
+              </label>
+              <label class="btn btn-secondary active">
+                <input type="radio" name="answer_2_radio" id="answer_2_radio_wrong" autocomplete="off" checked>NO
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-9">
+            <input type="text" class="form-control" id="answer_3_input" placeholder="Answer #3">
+          </div>
+          <div class="form-check col-3 text-right">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary">
+                <input type="radio" name="answer_3_radio" id="answer_3_radio_correct" autocomplete="off">YES
+              </label>
+              <label class="btn btn-secondary active">
+                <input type="radio" name="answer_3_radio" id="answer_3_radio_wrong" autocomplete="off" checked>NO
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-9">
+            <input type="text" class="form-control" id="answer_4_input" placeholder="Answer #4">
+          </div>
+          <div class="form-check col-3 text-right">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary">
+                <input type="radio" name="answer_4_radio" id="answer_4_radio_correct" autocomplete="off">YES
+              </label>
+              <label class="btn btn-secondary active">
+                <input type="radio" name="answer_4_radio" id="answer_4_radio_wrong" autocomplete="off" checked>NO
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="btn btn-block btn-warning font-weight-bold">Add trivia question</button>
+          </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+          <div class="col-8 text-center">
+            <div class="alert alert-success" style="display:none;" role="alert" id="successMessage">
+              Successfully added new question!
+            </div>
+            <div class="alert alert-danger" style="display:none;" role="alert" id="errorMessage">
+              Something went wrong, let us know!
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-1 col-xl-3"></div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+  <script>
+
+    $(document).ready(function () {
+
+      function successCallback(data) {
+        console.log("Question added: " + data);
+        $('#successMessage').show();
+        $('#successMessage').fadeOut(2000);
+      }
+
+      function errorCallback(data) {
+        console.log("Question adding failed: " + data);
+        $('#errorMessage').show();
+        $('#errorMessage').fadeOut(2000);
+      }
+
+      $('#guestQuestionForm').submit(function (event) {
+        // Stop form from submitting normally
+        event.preventDefault();
+
+        var nickname = null;
+
+        if (Cookies.get("nickname") != undefined && Cookies.get("nickname").length == 3) {
+          nickname = Cookies.get("nickname");
+        }
+
+        var answers = [];
+        answers.push($('#answer_1_input').val());
+        answers.push($('#answer_2_input').val());
+        answers.push($('#answer_3_input').val());
+        answers.push($('#answer_4_input').val());
+
+        var correct = [];
+        if ($('#answer_1_radio_correct').prop('checked')) {
+          correct.push($('#answer_1_input').val());
+        }
+        if ($('#answer_2_radio_correct').prop('checked')) {
+          correct.push($('#answer_2_input').val());
+        }
+        if ($('#answer_3_radio_correct').prop('checked')) {
+          correct.push($('#answer_3_input').val());
+        }
+        if ($('#answer_4_radio_correct').prop('checked')) {
+          correct.push($('#answer_4_input').val());
+        }
+
+        jsonPayload = {
+          'question': $('#quesion_input').val(),
+          'nickname': nickname,
+          'answers': answers,
+          'correct': correct
+        }
+
+        console.log('Submitting question: ' + JSON.stringify(jsonPayload));
+
+				// Post the data to the server
+				$.ajax({
+					type: "POST",
+					url: "api/questions/guestquestion",
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify(jsonPayload),
+					success: successCallback,
+					error: errorCallback,
+					dataType: "json"
+				});
+
+        $('#quesion_input').val(""),
+        $('#answer_1_input').val("");
+        $('#answer_2_input').val("");
+        $('#answer_3_input').val("");
+        $('#answer_4_input').val("");
+        $('#answer_1_radio_correct').prop('checked', true);
+        $('#answer_2_radio_correct').prop('checked', false);
+        $('#answer_3_radio_correct').prop('checked', false);
+        $('#answer_4_radio_correct').prop('checked', false);
+
+      });
+    });
+
+  </script>
+
+</body>
+
+</html>
