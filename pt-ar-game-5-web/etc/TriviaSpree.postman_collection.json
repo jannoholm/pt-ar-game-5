@@ -82,7 +82,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"question\": \"The second letter in the alphabet is:\",\n    \"nickname\": \"ASD\",\n    \"correct\": \"B\",\n    \"answers\": [\n        \"A\",\n        \"B\",\n        \"C\",\n        \"D\"\n    ]\n}",
+					"raw": "{\n    \"question\": \"A city in Estonia is:\",\n    \"nickname\": \"ASD\",\n    \"correct\": [\"Tallinn\", \"Tartu\"],\n    \"answers\": [\n        \"Tallinn\",\n        \"Tartu\",\n        \"Riga\",\n        \"Sofia\"\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
