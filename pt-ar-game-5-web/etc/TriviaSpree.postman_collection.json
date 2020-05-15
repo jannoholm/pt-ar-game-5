@@ -82,7 +82,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"question\": \"A city in Estonia is:\",\n    \"nickname\": \"ASD\",\n    \"correct\": [\"Tallinn\", \"Tartu\"],\n    \"answers\": [\n        \"Tallinn\",\n        \"Tartu\",\n        \"Riga\",\n        \"Sofia\"\n    ]\n}",
+					"raw": "{\n    \"question\": \"A city in Estonia is:\",\n    \"author\": \"ASD\",\n    \"correct\": [\"Tallinn\", \"Tartu\"],\n    \"answers\": [\n        \"Tallinn\",\n        \"Tartu\",\n        \"Riga\",\n        \"Sofia\"\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
