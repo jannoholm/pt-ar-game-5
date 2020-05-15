@@ -10,7 +10,7 @@ public class GuestTriviaQuestion {
 
 	@Id
 	private String questionId;
-	private String nickname;
+	private String author;
 	private String question;
 	private List<String> correct;
 	private List<String> answers;
@@ -23,12 +23,12 @@ public class GuestTriviaQuestion {
 		this.questionId = questionId;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 	public String getQuestion() {
@@ -57,7 +57,7 @@ public class GuestTriviaQuestion {
 
 	@Override
 	public String toString() {
-		return "GuestTriviaQuestion [questionId=" + questionId + ", nickname=" + nickname + ", question=" + question
+		return "GuestTriviaQuestion [questionId=" + questionId + ", author=" + author + ", question=" + question
 				+ ", correct=" + correct + ", answers=" + answers + "]";
 	}
 }

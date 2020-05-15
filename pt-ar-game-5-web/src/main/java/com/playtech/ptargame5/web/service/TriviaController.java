@@ -47,7 +47,7 @@ public class TriviaController {
 		Map<String, Map<String, Integer>> stats = new HashMap<>();
 
 		for (GameResult game : games) {
-			if(game.getAnswers() == null) {
+			if (game.getAnswers() == null) {
 				continue;
 			}
 			for (GameResultAnswer answer : game.getAnswers()) {
@@ -61,20 +61,23 @@ public class TriviaController {
 
 		return stats;
 	}
-	
+
 	@PostMapping("/api/questions/guestquestion")
 	public GuestTriviaQuestion addGuestQuestion(@RequestBody GuestTriviaQuestion guestQuestion) {
 
 		log.info("Received guest question: " + guestQuestion);
-		
+
 		Assert.isTrue(guestQuestion.getQuestion().length() < 400, "Question is too long");
-		for(String correct : guestQuestion.getCorrect()) {
-			Assert.isTrue(correct.length() < 400, "Correct answer is too long");	
+		if (guestQuestion.getAuthor() != null) {
+			Assert.isTrue(guestQuestion.getAuthor().length() < 400, "Author is too long");
 		}
-		for(String answer : guestQuestion.getAnswers()) {
-			Assert.isTrue(answer.length() < 400, "Answer is too long");	
+		for (String correct : guestQuestion.getCorrect()) {
+			Assert.isTrue(correct.length() < 400, "Correct answer is too long");
 		}
-		
+		for (String answer : guestQuestion.getAnswers()) {
+			Assert.isTrue(answer.length() < 400, "Answer is too long");
+		}
+
 		guestQuestion.setQuestionId(UUID.randomUUID().toString());
 
 		db.addGuestQuestion(guestQuestion);
