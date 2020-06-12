@@ -1,5 +1,7 @@
 package com.playtech.ptargame5.web.model;
 
+import com.playtech.ptargame5.web.LogUtils;
+
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
@@ -55,7 +57,6 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [nickname=" + nickname + ", name=" + name + ", email=" + email + ", internal=" + internal
-				+ ", interests=" + interests + "]";
+		return LogUtils.toString(this);
 	}
 }

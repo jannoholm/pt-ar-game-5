@@ -2,6 +2,8 @@ package com.playtech.ptargame5.web.model;
 
 import java.util.List;
 
+import com.playtech.ptargame5.web.LogUtils;
+
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
@@ -66,7 +68,6 @@ public class GameResult {
 
 	@Override
 	public String toString() {
-		return "GameResult [gameId=" + gameId + ", nickname=" + nickname + ", questionsAttempted=" + questionsAttempted
-				+ ", correctAnswers=" + correctAnswers + ", totalScore=" + totalScore + ", answers=" + answers + "]";
+		return LogUtils.toString(this);
 	}
 }

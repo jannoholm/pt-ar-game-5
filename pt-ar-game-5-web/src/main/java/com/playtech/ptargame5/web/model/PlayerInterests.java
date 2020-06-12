@@ -1,5 +1,7 @@
 package com.playtech.ptargame5.web.model;
 
+import com.playtech.ptargame5.web.LogUtils;
+
 public class PlayerInterests {
 
 	private Boolean consent;
@@ -77,8 +79,6 @@ public class PlayerInterests {
 
 	@Override
 	public String toString() {
-		return "PlayerInterests [consent=" + consent + ", development=" + development + ", projectManagement="
-				+ projectManagement + ", analysis=" + analysis + ", devOps=" + devOps + ", infra=" + infra + ", qa="
-				+ qa + ", adminHr=" + adminHr + "]";
+		return LogUtils.toString(this);
 	}
 }

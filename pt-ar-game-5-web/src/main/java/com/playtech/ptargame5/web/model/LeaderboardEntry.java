@@ -1,5 +1,7 @@
 package com.playtech.ptargame5.web.model;
 
+import com.playtech.ptargame5.web.LogUtils;
+
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
@@ -64,8 +66,6 @@ public class LeaderboardEntry {
 
 	@Override
 	public String toString() {
-		return "LeaderboardEntry [nickname=" + nickname + ", position=" + position + ", bestScore=" + bestScore
-				+ ", correctAnswers=" + correctAnswers + ", totalQuestions=" + totalQuestions + ", gamesPlayed="
-				+ gamesPlayed + "]";
+		return LogUtils.toString(this);
 	}
 }

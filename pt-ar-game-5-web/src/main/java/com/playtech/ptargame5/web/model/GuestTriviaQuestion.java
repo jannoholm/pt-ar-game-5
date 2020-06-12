@@ -2,6 +2,8 @@ package com.playtech.ptargame5.web.model;
 
 import java.util.List;
 
+import com.playtech.ptargame5.web.LogUtils;
+
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
@@ -57,7 +59,6 @@ public class GuestTriviaQuestion {
 
 	@Override
 	public String toString() {
-		return "GuestTriviaQuestion [questionId=" + questionId + ", author=" + author + ", question=" + question
-				+ ", correct=" + correct + ", answers=" + answers + "]";
+		return LogUtils.toString(this);
 	}
 }

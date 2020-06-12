@@ -24,7 +24,7 @@ public class GameController {
 	private DbAccess db;
 
 	@PostMapping("/api/private/game")
-	public GameResult addPlayer(@RequestBody GameResult gameResult) {
+	public GameResult addGameResult(@RequestBody GameResult gameResult) {
 
 		log.info("Received game result: " + gameResult);
 

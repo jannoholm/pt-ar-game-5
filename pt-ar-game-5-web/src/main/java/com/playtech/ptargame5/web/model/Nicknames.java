@@ -2,6 +2,8 @@ package com.playtech.ptargame5.web.model;
 
 import java.util.List;
 
+import com.playtech.ptargame5.web.LogUtils;
+
 public class Nicknames {
 
 	private List<String> nicknames;
@@ -16,6 +18,6 @@ public class Nicknames {
 
 	@Override
 	public String toString() {
-		return "Nicknames [nicknames=" + nicknames + "]";
+		return LogUtils.toString(this);
 	}
 }

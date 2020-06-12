@@ -2,6 +2,8 @@ package com.playtech.ptargame5.web.model;
 
 import java.util.List;
 
+import com.playtech.ptargame5.web.LogUtils;
+
 public class LeaderboardTable {
 
 	private List<LeaderboardEntry> data;
@@ -16,6 +18,6 @@ public class LeaderboardTable {
 
 	@Override
 	public String toString() {
-		return "LeaderboardTable [data=" + data + "]";
+		return LogUtils.toString(this);
 	}
 }

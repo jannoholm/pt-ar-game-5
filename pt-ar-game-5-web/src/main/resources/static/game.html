@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="favicon.ico">
+
+  <title>Trivia Spree Leaderboard</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+  <style type="text/css">
+    body {
+      padding-top: 5rem;
+      /* color: #fff; */
+    }
+
+    .starter-template {
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    @keyframes auto-progress {
+      0% {
+        width: 0%;
+      }
+
+      100% {
+        width: 100%;
+      }
+    }
+
+    .progress-bar {
+      background-color: #1a1a1a;
+      height: 2vh;
+      width: 100%;
+      border-radius: 5px;
+      box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
+    }
+
+    .progress-bar-inner {
+      display: block;
+      height: 2vh;
+      width: 0%;
+      background-color: #34c2e3;
+      border-radius: 3px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+      position: relative;
+      animation: auto-progress 60s linear;
+    }
+
+    .answer-button-content {
+      cursor: pointer;
+    }
+
+    .noselect {
+      /* iOS Safari */
+      -webkit-touch-callout: none;
+      /* Safari */
+      -webkit-user-select: none;
+      /* Konqueror HTML */
+      -khtml-user-select: none;
+      /* Old versions of Firefox */
+      -moz-user-select: none;
+      /* Internet Explorer/Edge */
+      -ms-user-select: none;
+      /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+      user-select: none;
+    }
+
+    .bg {
+      /* The image used */
+      background-image: url("bg-leaderboard.jpg");
+
+      /* Full height */
+      height: 100%;
+
+
+      /* Center and scale the image nicely */
+      background-color: #09060F;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center;
+      background-size: contain;
+      opacity: .8;
+    }
+  </style>
+
+</head>
+
+<body class="bg noselect">
+  <div class="row text-white">
+    <div class="col-1 col-xl-2">
+      <!-- Responsive spacing on the edges -->
+    </div>
+    <div class="col-10 col-xl-8 text-center">
+      <!-- Place content here -->
+      <!-- START GAME -->
+      <div id="start-game-content">
+        <div class="row mb-5">
+          <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
+        </div>
+        <div class="row mb-5">
+          <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button" id="start-game-button">START NEW GAME</a></div>
+        </div>
+      </div>
+      <!-- GAME STARTED -->
+      <div id="game-started-content" style="display:none;">
+        <div class="row">
+          <div class="col">
+            <p class="text-white" style="font-size: 3vh"><strong>SCORE:&nbsp;</strong><strong id="score-content">2232</strong></p>
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col">
+            <div class="progress-bar-container">
+              <div class="progress-bar stripes animated reverse slower">
+                <span class="progress-bar-inner"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="height: 30vh">
+          <div class="col-1 align-self-end">
+            <p>
+              <strong id="question-level-indicator-left">
+                <span class="question-level-indicator-10" style="display: none;">|</span><br>
+                <span class="question-level-indicator-9" style="display: none;">|</span><br>
+                <span class="question-level-indicator-8" style="display: none;">|</span><br>
+                <span class="question-level-indicator-7" style="display: none;">|</span><br>
+                <span class="question-level-indicator-6" style="display: none;">|</span><br>
+                <span class="question-level-indicator-5" style="display: none;">|</span><br>
+                <span class="question-level-indicator-4" style="display: none;">|</span><br>
+                <span class="question-level-indicator-3" style="display: none;">|</span><br>
+                <span class="question-level-indicator-2" style="display: none;">|</span><br>
+              </strong>
+            </p>
+          </div>
+          <div class="col-10 align-self-center">
+            <p style="width: 100%; font-size: 4vh"><strong id="question-content">Question placeholder</strong></p>
+          </div>
+          <div class="col-1 align-self-end">
+            <p>
+              <strong id="question-level-indicator-right">
+                <span class="question-level-indicator-10" style="display: none;">|</span><br>
+                <span class="question-level-indicator-9" style="display: none;">|</span><br>
+                <span class="question-level-indicator-8" style="display: none;">|</span><br>
+                <span class="question-level-indicator-7" style="display: none;">|</span><br>
+                <span class="question-level-indicator-6" style="display: none;">|</span><br>
+                <span class="question-level-indicator-5" style="display: none;">|</span><br>
+                <span class="question-level-indicator-4" style="display: none;">|</span><br>
+                <span class="question-level-indicator-3" style="display: none;">|</span><br>
+                <span class="question-level-indicator-2" style="display: none;">|</span><br>
+              </strong>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="height: 15vh">
+          <!--  rgb(226, 27, 60)  rgb(19, 104, 206)  rgb(208, 159, 54)  rgb(38, 137, 12)-->
+          <div class="col-6">
+            <div class="row h-100 m-0 answer-button-content" style="background: rgb(226, 27, 60); border-radius: 1em;">
+              <div class="col align-self-center">
+                <p style="font-size: 3vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row h-100 m-0 answer-button-content" style="background: rgb(19, 104, 206); border-radius: 1em;">
+              <div class="col align-self-center">
+                <p style="font-size: 3vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-4" style="height: 15vh">
+          <div class="col-6">
+            <div class="row h-100 m-0 answer-button-content" style="background: rgb(208, 159, 54); border-radius: 1em;">
+              <div class="col align-self-center">
+                <p style="font-size: 3vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row h-100 m-0 answer-button-content" style="background: rgb(38, 137, 12); border-radius: 1em;">
+              <div class="col align-self-center">
+                <p style="font-size: 3vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- GAME ENDED -->
+      <div id="game-ended-content" style="display:none;">
+        <div class="row">
+          <div class="col">
+            <strong>GAME ENDED!</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>YOUR SCORE:&nbsp;</strong><strong id="total-score-content">0</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>TOTAL QUESTIONS:&nbsp;</strong><strong id="questions-attempted-content">0</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>CORRECT ANSWERS:&nbsp;</strong><strong id="correct-answers-content">0</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>NEW LEADERBOARD POSITION:&nbsp;</strong><strong id="new-leaderboard-position-content">0</strong>
+          </div>
+        </div>
+      </div>
+      <!-- Main content end-->
+    </div>
+    <div class="col-1 col-xl-2">
+      <!-- Responsive spacing on the edges -->
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <script>
+
+      var nickname = null;
+      var gameId = null;
+      var loadingBarStartTime = null;
+      var loadingBarId = null;
+
+      if (Cookies.get('nickname') != undefined && Cookies.get('nickname').length == 3) {
+        nickname = Cookies.get('nickname');
+      } else {
+        // TODO Add no nickname logic
+      }
+
+      function startGame() {
+        console.log('Starting game');
+
+        jsonPayload = {
+          'nickname': nickname
+        }
+
+        // Post the data to the server
+        $.ajax({
+          type: 'POST',
+          url: 'api/gamesession/start',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(jsonPayload),
+          success: startGameCallback,
+          error: startGameErrorCallback,
+          dataType: 'json'
+        });
+
+      }
+
+      function startGameCallback(data) {
+        console.log('Received response', data);
+        gameId = data.gameId;
+        firstQuestion();
+      }
+
+      function startGameErrorCallback(data) {
+        console.log('Something went wrong!', data);
+      }
+
+      function firstQuestion() {
+        jsonPayload = {
+          'gameId': gameId
+        }
+
+        // Post the data to the server
+        $.ajax({
+          type: 'POST',
+          url: 'api/gamesession/next',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(jsonPayload),
+          success: firstQuestionCallback,
+          error: firstQuestionErrorCallback,
+          dataType: 'json'
+        });
+      }
+
+      function firstQuestionCallback(data) {
+        console.log('Received response', data);
+
+        $('#question-content').text(data.question);
+        $('#answer-content-1').text(data.answers[0]);
+        $('#answer-content-2').text(data.answers[1]);
+        $('#answer-content-3').text(data.answers[2]);
+        $('#answer-content-4').text(data.answers[3]);
+
+
+        $('#start-game-content').hide();
+        $('#game-started-content').show();
+        $('#game-ended-content').hide();
+      }
+
+      function firstQuestionErrorCallback(data) {
+        console.log('Something went wrong!', data);
+        endGameSession();
+      }
+
+      function submitAnswer(answer) {
+
+        jsonPayload = {
+          'gameId': gameId,
+          'lastQuestionAnswer': answer
+        }
+
+        // Post the data to the server
+        $.ajax({
+          type: 'POST',
+          url: 'api/gamesession/next',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(jsonPayload),
+          success: submitAnswerCallback,
+          error: submitAnswerErrorCallback,
+          dataType: 'json'
+        });
+
+      }
+
+      function submitAnswerCallback(data) {
+        console.log('Received response', data);
+
+        $('#question-content').text(data.question);
+        $('#answer-content-1').text(data.answers[0]);
+        $('#answer-content-2').text(data.answers[1]);
+        $('#answer-content-3').text(data.answers[2]);
+        $('#answer-content-4').text(data.answers[3]);
+        $('#score-content').text(data.newTotalScore);
+
+        for (var i = 1; i <= 10; i++) {
+          if (i <= data.level) {
+            $('.question-level-indicator-' + i).show();
+          } else {
+            $('.question-level-indicator-' + i).hide();
+          }
+        }
+      }
+
+      function submitAnswerErrorCallback(data) {
+        console.log('Something went wrong!', data);
+        endGameSession();
+      }
+
+      function endGameSession() {
+
+        jsonPayload = {
+          'gameId': gameId
+        }
+
+        // Post the data to the server
+        $.ajax({
+          type: 'POST',
+          url: 'api/gamesession/end',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(jsonPayload),
+          success: endGameCallback,
+          error: endGameErrorCallback,
+          dataType: 'json'
+        });
+
+      }
+
+      function endGameCallback(data) {
+
+        $('#total-score-content').text(data.totalScore);
+        $('#questions-attempted-content').text(data.questionsAttempted);
+        $('#correct-answers-content').text(data.correctAnswers);
+        $('#new-leaderboard-position-content').text(data.newLeaderboardPosition);
+
+        $('#start-game-content').show();
+        $('#game-started-content').hide();
+        $('#game-ended-content').show();
+        $('#score-content').text(0);
+
+        for (var i = 1; i <= 10; i++) {
+          $('.question-level-indicator-' + i).hide();
+        }
+      }
+
+      function endGameErrorCallback(data) {
+        // TODO
+      }
+
+      $(document).ready(function () {
+
+        $('#start-game-button').click(function () {
+          event.preventDefault();
+          startGame();
+        });
+
+        $('.answer-button-content').click(function (event) {
+          console.log('Answer button clicked: ' + $(event.target).parent().find('strong').text());
+          // Parent is needed just in case player clicked on the <strong> element itself
+          submitAnswer($(event.target).parent().find('strong').text())
+        });
+
+        $('.progress-bar-inner').on('animationend', function () {
+          console.log('Progress bar finished');
+          endGameSession();
+        });
+
+      });
+
+    </script>
+
+</body>
+
+</html>

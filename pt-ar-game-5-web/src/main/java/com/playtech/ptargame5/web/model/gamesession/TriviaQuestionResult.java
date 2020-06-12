@@ -1,18 +1,28 @@
-package com.playtech.ptargame5.web.model;
+package com.playtech.ptargame5.web.model.gamesession;
 
 import com.playtech.ptargame5.web.LogUtils;
+import com.playtech.ptargame5.web.model.TriviaQuestion;
 
-public class GameResultAnswer {
+public class TriviaQuestionResult {
 
-	private String question;
+	private boolean correct;
+	private TriviaQuestion question;
 	private String playerInput;
 	private Long timeTaken;
 
-	public String getQuestion() {
+	public boolean isCorrect() {
+		return correct;
+	}
+
+	public void setCorrect(boolean correct) {
+		this.correct = correct;
+	}
+
+	public TriviaQuestion getQuestion() {
 		return question;
 	}
 
-	public void setQuestion(String question) {
+	public void setQuestion(TriviaQuestion question) {
 		this.question = question;
 	}
 
