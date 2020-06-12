@@ -100,7 +100,16 @@
     <div class="col-10 col-xl-8 text-center">
       <!-- Place content here -->
       <!-- START GAME -->
-      <div id="start-game-content">
+      <div id="signup-first-content" style="display:none;">
+          <div class="row mb-5">
+            <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
+          </div>
+          <div class="row mb-5">
+            <div class="col text-center"><a class="btn btn-primary" href="signup.html" role="button">REGISTER USER HERE FIRST</a></div>
+          </div>
+        </div>
+      <!-- START GAME -->
+      <div id="start-game-content" style="display:none;">
         <div class="row mb-5">
           <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
         </div>
@@ -244,8 +253,9 @@
 
       if (Cookies.get('nickname') != undefined && Cookies.get('nickname').length == 3) {
         nickname = Cookies.get('nickname');
+        $('#start-game-content').show();
       } else {
-        // TODO Add no nickname logic
+        $('#signup-first-content').show();
       }
 
       function startGame() {

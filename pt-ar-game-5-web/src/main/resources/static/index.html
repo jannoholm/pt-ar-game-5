@@ -47,15 +47,6 @@
 
 <body class="bg">
   <main role="main" class="container-fluid">
-    <div class="row" id="new_player_container" style="display: none;">
-      <div class="col-md-12">
-        <form id="new_player_form">
-          <div class="mb-2 mt-sc-2" style="text-align: center;">
-            <button id="personal_action" type="submit" class="btn btn-primary">Register to play</button><br>
-          </div>
-        </form>
-      </div>
-    </div>
     <div class="row" id="nickname_container" style="display: none;">
       <div class="col-md-12">
         <div class="mb-2 mt-sc-2" style="text-align: center; color: white;">
@@ -89,6 +80,16 @@
         </table>
       </div>
     </div>
+    <div class="row mt-3" style="display: none;" id="signup-container">
+      <div class="col text-center">
+        <div class="col text-center"><a class="btn btn-primary" href="signup.html" role="button">Register to play</a></div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col text-center" style="display: none;" id="play-the-game-container">
+        <div class="col text-center"><a class="btn btn-primary" href="game.html" role="button">Play the game!</a></div>
+      </div>
+    </div>
     <div class="row mt-3">
       <div class="col text-center">
         <div class="col text-center"><a class="btn btn-primary" href="guestquestion.html" role="button">Add your trivia question</a></div>
@@ -117,9 +118,10 @@
       console.log("Nickname cookie: " + Cookies.get("nickname"));
       if (Cookies.get("nickname") != undefined && Cookies.get("nickname").length == 3) {
         $("#nickname_label").text(Cookies.get("nickname"));
-        $("#nickname_container").toggle();
+        $("#nickname_container").show();
+        $("#play-the-game-container").show();        
       } else {
-        $("#new_player_container").toggle();
+        $("#signup-container").show();
       }
 
       var leaderboard = $('#leaderboard_table').DataTable({
@@ -142,12 +144,6 @@
           { "data": "totalQuestions" },
           { "data": "gamesPlayed" },
         ],
-      });
-
-      $("#new_player_form").submit(function (event) {
-        // Stop form from submitting normally
-        event.preventDefault();
-        window.location.href = "signup.html";
       });
 
       setInterval(function () {

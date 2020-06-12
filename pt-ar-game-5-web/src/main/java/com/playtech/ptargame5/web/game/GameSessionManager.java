@@ -174,6 +174,7 @@ public class GameSessionManager {
 
 	private TriviaQuestion getNextQuestion(boolean wasLastAnswerCorrect, List<TriviaQuestionResult> questionsAnswered) {
 
+		// TODO Don't give repeating questions
 		if (wasLastAnswerCorrect) {
 			TriviaQuestionResult lastAnswer = questionsAnswered.get(questionsAnswered.size() - 1);
 			int lastQuestionLevel = lastAnswer.getQuestion().getLevel();
