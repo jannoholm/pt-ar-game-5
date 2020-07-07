@@ -141,10 +141,15 @@ public class GameSessionManager {
 		for (TriviaQuestionResult result : session.getQuestionsAnswered()) {
 			// GameResultAnswer is more compact data holder for statistical purposes, no need to save everything
 			GameResultAnswer answer = new GameResultAnswer();
+			answer.setAnsweredCorrectly(result.isCorrect());
+			answer.setCategory(result.getQuestion().getCategory());
+			// There is always at least one correct answer...
+			answer.setCorrectAnswer(result.getQuestion().getCorrect().get(0));
+			answer.setLevel(result.getQuestion().getLevel());
 			answer.setPlayerInput(result.getPlayerInput());
 			answer.setQuestion(result.getQuestion().getQuestion());
 			answer.setTimeTaken(result.getTimeTaken());
-			
+						
 			answers.add(answer);
 		}
 		

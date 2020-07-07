@@ -297,7 +297,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"nickname\": \"AAS\",\n\t\"questionsAttempted\": 5,\n\t\"correctAnswers\": 10,\n\t\"totalScore\": 140,\n\t\"answers\": [\n\t\t{\"question\": \"What is the first letter of the alphabet?\", \"playerInput\": \"A\", \"timeTaken\": 5000},\n\t\t{\"question\": \"WWhose nose grew longer every time he lied?\", \"playerInput\": \"Pinocchio\", \"timeTaken\": 10000},\n\t\t{\"question\": \"What is the name of the fairy in Peter Pan?\", \"playerInput\": \"Tinkerbell\", \"timeTaken\": 2500},\n\t\t{\"question\": \"If you freeze water, what do you get?\", \"playerInput\": \"Ice\", \"timeTaken\": 1337}\n\t]\n}",
+					"raw": "{\n\t\"nickname\": \"AAS\",\n\t\"questionsAttempted\": 5,\n\t\"correctAnswers\": 10,\n\t\"totalScore\": 140,\n\t\"answers\": [\n\t\t{\"question\": \"What is the first letter of the alphabet?\", \"level\": 1, \"category\": \"Varia\", \"answeredCorrectly\": true, \"correctAnswer\": \"A\", \"playerInput\": \"A\", \"timeTaken\": 5000},\n\t\t{\"question\": \"Whose nose grew longer every time he lied?\", \"level\": 1, \"category\": \"Varia\", \"answeredCorrectly\": false, \"correctAnswer\": \"Pinocchio\", \"playerInput\": \"Voldemort\", \"timeTaken\": 5000}\n\t]\n}",
 					"options": {
 						"raw": {
 							"language": "json"

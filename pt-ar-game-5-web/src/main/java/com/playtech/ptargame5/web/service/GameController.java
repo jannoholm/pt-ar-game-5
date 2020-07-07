@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.playtech.ptargame5.web.db.DbAccess;
 import com.playtech.ptargame5.web.model.GameResult;
+import com.playtech.ptargame5.web.model.GameResultAnswer;
 
 @CrossOrigin
 @RestController
@@ -35,6 +36,30 @@ public class GameController {
 		Assert.hasText(gameResult.getNickname(), "Nickname is required");
 
 		Assert.notNull(db.findPlayer(gameResult.getNickname()), "Nickname not found");
+
+		Assert.notNull(gameResult.getAnswers(), "List of answers is required");
+
+		for (GameResultAnswer answer : gameResult.getAnswers()) {
+
+			Assert.hasText(answer.getQuestion(), "Question is required");
+			Assert.isTrue(answer.getQuestion().length() < 400, "Question is too long");
+
+			Assert.notNull(answer.getLevel(), "Level is required");
+
+			Assert.hasText(answer.getCategory(), "Category is required");
+			Assert.isTrue(answer.getCategory().length() < 40, "Category is too long");
+
+			Assert.notNull(answer.getAnsweredCorrectly(), "Answered correctly is required");
+
+			Assert.hasText(answer.getCorrectAnswer(), "Correct answer is required");
+			Assert.isTrue(answer.getCorrectAnswer().length() < 100, "Correct answer is too long");
+
+			Assert.hasText(answer.getPlayerInput(), "Player input is required");
+			Assert.isTrue(answer.getPlayerInput().length() < 100, "Player is too long");
+
+			Assert.notNull(answer.getTimeTaken(), "Time taken is required");
+
+		}
 
 		gameResult.setGameId(UUID.randomUUID().toString());
 
