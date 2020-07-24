@@ -20,8 +20,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		auth
 				.inMemoryAuthentication()
-				.withUser("guest").password(encoder.encode(conf.getGuestPassword())).roles("guest-role").and()
-				.passwordEncoder(encoder);
+				.withUser("guest").password(encoder.encode(conf.getGuestPassword())).roles("guest-role").and().passwordEncoder(encoder)
+				.withUser("private").password(encoder.encode(conf.getApiPassword())).roles("api-role").and().passwordEncoder(encoder);
 	}
 
 	@Override
@@ -34,8 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.loginPage("/login.html")
 				.permitAll();
 		
-		// TODO Add regular HTTP auth for /private/ APIs
 		http.authorizeRequests().antMatchers("/*").hasRole("guest-role");
-		;
+		http.antMatcher("/api/private/**").authorizeRequests().anyRequest().hasRole("api-role").and().httpBasic();
 	}
 }

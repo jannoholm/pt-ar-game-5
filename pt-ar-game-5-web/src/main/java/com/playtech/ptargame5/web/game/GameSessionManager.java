@@ -34,7 +34,7 @@ public class GameSessionManager {
 
 	@Autowired
 	private DbAccess db;
-	
+
 	@Autowired
 	private LeaderboardManager leaderboard;
 
@@ -103,7 +103,7 @@ public class GameSessionManager {
 			session.getQuestionsAnswered().add(result);
 		}
 
-		TriviaQuestion question = getNextQuestion(wasLastAnswerCorrect, session.getQuestionsAnswered());
+		TriviaQuestion question = getNextQuestion(wasLastAnswerCorrect, session);
 
 		List<String> answers = new ArrayList<>(question.getAnswers());
 		Collections.shuffle(answers);
@@ -149,10 +149,10 @@ public class GameSessionManager {
 			answer.setPlayerInput(result.getPlayerInput());
 			answer.setQuestion(result.getQuestion().getQuestion());
 			answer.setTimeTaken(result.getTimeTaken());
-						
+
 			answers.add(answer);
 		}
-		
+
 		GameResult gameResult = new GameResult();
 		gameResult.setAnswers(answers);
 		gameResult.setCorrectAnswers(calculateCorrectAnswers(session.getQuestionsAnswered()));
@@ -160,7 +160,7 @@ public class GameSessionManager {
 		gameResult.setNickname(session.getPlayer().getNickname());
 		gameResult.setQuestionsAttempted(session.getQuestionsAnswered().size());
 		gameResult.setTotalScore(calculateTotalScore(session.getQuestionsAnswered()));
-		
+
 		log.info("Storing new game result: " + gameResult);
 		db.addGameResult(gameResult);
 
@@ -171,33 +171,47 @@ public class GameSessionManager {
 		response.setNewLeaderboardPosition(leaderboard.getPlayerPosition(session.getPlayer()));
 
 		log.info("Session ended: " + session);
-		
+
 		sessions.remove(gameId);
-		
+
 		return response;
 	}
 
-	private TriviaQuestion getNextQuestion(boolean wasLastAnswerCorrect, List<TriviaQuestionResult> questionsAnswered) {
+	private TriviaQuestion getNextQuestion(boolean wasLastAnswerCorrect, GameSessionData session) {
 
-		// TODO Don't give repeating questions
+		int nextQuestionLevel = 1;
+
 		if (wasLastAnswerCorrect) {
-			TriviaQuestionResult lastAnswer = questionsAnswered.get(questionsAnswered.size() - 1);
+			TriviaQuestionResult lastAnswer = session.getQuestionsAnswered().get(session.getQuestionsAnswered().size() - 1);
 			int lastQuestionLevel = lastAnswer.getQuestion().getLevel();
 
 			if (lastQuestionLevel <= 10) {
 				// Increase level by one each time
-				List<TriviaQuestion> questions = questionsPerLevel.get(lastQuestionLevel + 1);
-				return questions.get(r.nextInt(questions.size()));
+				nextQuestionLevel = lastQuestionLevel + 1;
 			} else {
 				// We can't go beyond level 10
-				List<TriviaQuestion> questions = questionsPerLevel.get(lastQuestionLevel);
-				return questions.get(r.nextInt(questions.size()));
+				nextQuestionLevel = lastQuestionLevel;
 			}
 		} else {
 			// Start from beginning if last answer was incorrect or it's a first question
-			List<TriviaQuestion> questions = questionsPerLevel.get(1);
-			return questions.get(r.nextInt(questions.size()));
+			nextQuestionLevel = 1;
 		}
+
+		// An easy naive way to get rid of duplicate questions: create a clone list and remove them
+		List<TriviaQuestion> poolOfQuestions = new ArrayList<>(questionsPerLevel.get(nextQuestionLevel));
+		poolOfQuestions.removeAll(session.getQuestionsAsked());
+
+		// If player is not interested in development, skip questions related to development
+		if (!session.getPlayer().getInterests().getDevelopment()) {
+			poolOfQuestions.removeIf(question -> question.getCategory().equals("Software Development"));
+		}
+
+		if (poolOfQuestions.size() < 1) {
+			// If for some obscure reason we run out of questions, fallback to default list
+			poolOfQuestions = questionsPerLevel.get(nextQuestionLevel);
+		}
+
+		return poolOfQuestions.get(r.nextInt(poolOfQuestions.size()));
 	}
 
 	private int calculateTotalScore(List<TriviaQuestionResult> answers) {

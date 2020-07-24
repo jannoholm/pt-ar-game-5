@@ -267,6 +267,21 @@
 		{
 			"name": "/api/private/players",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "private",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{api-password}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -286,6 +301,21 @@
 		{
 			"name": "/api/private/game",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{api-password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "private",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -321,6 +351,21 @@
 		{
 			"name": "/api/private/questions",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{api-password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "private",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -340,6 +385,21 @@
 		{
 			"name": "/api/private/questions/stats",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{api-password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "private",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -356,6 +416,28 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d093509e-5a65-4b87-90c0-3f9860b85daa",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d1113934-577f-4a14-8619-7ecbb606d449",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"protocolProfileBehavior": {}

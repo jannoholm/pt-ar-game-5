@@ -1,2 +1,3 @@
 spring.main.banner-mode=off
 security.guestPassword=change-me-please
+security.apiPassword=change-me-please

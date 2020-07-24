@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationProperties {
 
 	private String guestPassword;
+	private String apiPassword;
 
 	public String getGuestPassword() {
 		return guestPassword;
@@ -15,5 +16,13 @@ public class ApplicationProperties {
 
 	public void setGuestPassword(String guestPassword) {
 		this.guestPassword = guestPassword;
+	}
+
+	public String getApiPassword() {
+		return apiPassword;
+	}
+
+	public void setApiPassword(String apiPassword) {
+		this.apiPassword = apiPassword;
 	}
 }
