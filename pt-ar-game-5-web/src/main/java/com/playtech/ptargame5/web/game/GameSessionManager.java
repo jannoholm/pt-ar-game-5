@@ -202,7 +202,7 @@ public class GameSessionManager {
 		poolOfQuestions.removeAll(session.getQuestionsAsked());
 
 		// If player is not interested in development, skip questions related to development
-		if (!session.getPlayer().getInterests().getDevelopment()) {
+		if (session.getPlayer().getInterests() == null || !session.getPlayer().getInterests().getDevelopment()) {
 			poolOfQuestions.removeIf(question -> question.getCategory().equals("Software Development"));
 		}
 
