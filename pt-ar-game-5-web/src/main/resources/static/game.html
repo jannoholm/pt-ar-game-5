@@ -101,13 +101,13 @@
       <!-- Place content here -->
       <!-- START GAME -->
       <div id="signup-first-content" style="display:none;">
-          <div class="row mb-5">
-            <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
-          </div>
-          <div class="row mb-5">
-            <div class="col text-center"><a class="btn btn-primary" href="signup.html" role="button">REGISTER USER HERE FIRST</a></div>
-          </div>
+        <div class="row mb-5">
+          <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
         </div>
+        <div class="row mb-5">
+          <div class="col text-center"><a class="btn btn-primary" href="signup.html" role="button">REGISTER USER HERE FIRST</a></div>
+        </div>
+      </div>
       <!-- START GAME -->
       <div id="start-game-content" style="display:none;">
         <div class="row mb-5">
@@ -426,6 +426,13 @@
           console.log('Progress bar finished');
           endGameSession();
         });
+
+        $(document).keypress(function (e) {
+          console.log(event);
+          if (event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4') {
+            $('#answer-content-' + event.key).click();
+          }
+        })
 
       });
 
