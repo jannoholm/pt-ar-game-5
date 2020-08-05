@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.playtech.ptargame5.web.model.GameResult;
 import com.playtech.ptargame5.web.model.GuestTriviaQuestion;
 import com.playtech.ptargame5.web.model.Player;
+import com.playtech.ptargame5.web.model.PlayerFeedback;
 import com.playtech.ptargame5.web.model.TriviaQuestion;
 
 import io.jsondb.JsonDBTemplate;
@@ -26,6 +27,10 @@ public class DbAccess {
 		if (!db.collectionExists(Player.class)) {
 			db.createCollection(Player.class);
 			log.info("Created Player collection db");
+		}
+		if (!db.collectionExists(PlayerFeedback.class)) {
+			db.createCollection(PlayerFeedback.class);
+			log.info("Created PlayerFeedback collection db");
 		}
 		if (!db.collectionExists(TriviaQuestion.class)) {
 			db.createCollection(TriviaQuestion.class);
@@ -48,6 +53,10 @@ public class DbAccess {
 			// TODO Add proper error response
 			throw new IllegalStateException("User exists");
 		}
+	}
+	
+	public void addFeedback(PlayerFeedback feedback) {
+		db.insert(feedback);
 	}
 
 	public boolean isInternalPlayer(String nickname) {

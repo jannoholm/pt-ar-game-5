@@ -2,6 +2,7 @@ package com.playtech.ptargame5.web.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.playtech.ptargame5.web.db.DbAccess;
 import com.playtech.ptargame5.web.model.Nicknames;
 import com.playtech.ptargame5.web.model.Player;
+import com.playtech.ptargame5.web.model.PlayerFeedback;
 
 @CrossOrigin
 @RestController
@@ -88,4 +90,25 @@ public class PlayerController {
 		log.info("Returning all nicknames: " + nicknames.size());
 		return nicknamesContainer;
 	}
+	
+	@PostMapping("/api/player/feedback")
+	public PlayerFeedback submitFeedback(@RequestBody PlayerFeedback feedback) {
+
+		log.info("Received player feedback: " + feedback);
+
+		Assert.hasText(feedback.getNickname(), "Nickname is required");
+		Assert.isTrue(feedback.getNickname().length() < 5, "Nickname is too long"); // Note: 'anon' is also correct
+
+		Assert.hasText(feedback.getFeedback(), "Feedback is required");
+		Assert.isTrue(feedback.getFeedback().length() < 400, "Feedback is too long");
+
+		feedback.setId(UUID.randomUUID().toString());
+
+		db.addFeedback(feedback);
+
+		log.info("Player feedback submitted successfully: " + feedback);
+
+		return feedback;
+	}
+
 }

@@ -203,7 +203,7 @@
         </div>
       </div>
       <!-- GAME ENDED -->
-      <div id="game-ended-content" style="display:none;">
+      <div class="pb-5" id="game-ended-content" style="display:none;">
         <div class="row">
           <div class="col">
             <strong>GAME ENDED!</strong>
@@ -229,6 +229,31 @@
             <strong>NEW LEADERBOARD POSITION:&nbsp;</strong><strong id="new-leaderboard-position-content">0</strong>
           </div>
         </div>
+      </div>
+      <!-- GAME ENDED FEEDBACK -->
+      <div class="pt-5" style="display:none;" id="game-feedback-content">
+        <form id="game-feedback-form">
+          <div class="row justify-content-around">
+            <div class="col-xl-4">
+              <textarea class="form-control" id="game-feedback-input" rows="3" placeholder="Give us feedback" required></textarea>
+            </div>
+          </div>
+          <div class="row mt-1 justify-content-around">
+            <div class="col-xl-4">
+              <button type="submit" class="btn btn-block btn-warning font-weight-bold">Submit feedback</button>
+            </div>
+          </div>
+          <div class="row mt-3 justify-content-center">
+            <div class="col-xl-4 text-center">
+              <div class="alert alert-success" style="display:none;" role="alert" id="feedbackSuccessMessage">
+                Successfully submitted your feedback!
+              </div>
+              <div class="alert alert-danger" style="display:none;" role="alert" id="feedbackErrorMessage">
+                Something went wrong, let us know!
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <!-- Main content end-->
     </div>
@@ -318,6 +343,7 @@
         $('#start-game-content').hide();
         $('#game-started-content').show();
         $('#game-ended-content').hide();
+        $('#game-feedback-content').hide();
       }
 
       function firstQuestionErrorCallback(data) {
@@ -398,6 +424,7 @@
         $('#start-game-content').show();
         $('#game-started-content').hide();
         $('#game-ended-content').show();
+        $('#game-feedback-content').show();
         $('#score-content').text(0);
 
         for (var i = 1; i <= 10; i++) {
@@ -409,6 +436,20 @@
         // TODO
       }
 
+      // Feedback form
+      function feedbackSuccessCallback(data) {
+        console.log('Feedback successfully submitted', + data);
+        $('#feedbackSuccessMessage').show();
+        $('#feedbackSuccessMessage').fadeOut(2000);
+      }
+
+      function feedbackErrorCallback(data) {
+        console.log('Feedback submit failed', data);
+        $('#feedbackErrorMessage').show();
+        $('#feedbackErrorMessage').fadeOut(4000);
+      }
+
+      // Initialize everything
       $(document).ready(function () {
 
         $('#start-game-button').click(function () {
@@ -428,11 +469,43 @@
         });
 
         $(document).keypress(function (e) {
-          console.log(event);
           if (event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4') {
             $('#answer-content-' + event.key).click();
           }
         })
+
+        // Feedback form
+        $('#game-feedback-form').submit(function (event) {
+          // Stop form from submitting normally
+          event.preventDefault();
+
+          var nickname = 'anon';
+
+          if (Cookies.get('nickname') != undefined && Cookies.get('nickname').length == 3) {
+            nickname = Cookies.get('nickname');
+          }
+
+          jsonPayload = {
+            'nickname': nickname,
+            'feedback': $('#game-feedback-input').val()
+          }
+
+          console.log('Submitting feedback: ' + JSON.stringify(jsonPayload));
+
+          // Post the data to the server
+          $.ajax({
+            type: 'POST',
+            url: 'api/player/feedback',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(jsonPayload),
+            success: feedbackSuccessCallback,
+            error: feedbackErrorCallback,
+            dataType: 'json'
+          });
+
+          $('#game-feedback-input').val('');
+
+        });
 
       });
 
