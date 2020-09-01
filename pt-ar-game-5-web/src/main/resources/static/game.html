@@ -457,8 +457,16 @@
           startGame();
         });
 
+        var lastAnswerClickTimestamp = 0;
         $('.answer-button-content').click(function (event) {
           console.log('Answer button clicked: ' + $(event.target).parent().find('strong').text());
+
+          if (lastAnswerClickTimestamp + 500 > new Date().getTime()) {
+            console.log('Ignoring rapid answer attempts within 500ms');
+            return;
+          }
+
+          lastAnswerClickTimestamp = new Date().getTime();
           // Parent is needed just in case player clicked on the <strong> element itself
           submitAnswer($(event.target).parent().find('strong').text())
         });
