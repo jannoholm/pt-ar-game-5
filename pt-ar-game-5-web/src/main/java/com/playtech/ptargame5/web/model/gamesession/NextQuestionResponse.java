@@ -7,8 +7,6 @@ import com.playtech.ptargame5.web.LogUtils;
 public class NextQuestionResponse {
 
 	private Boolean lastQuestionCorrect;
-	private Integer currentSpree;
-	private Integer currentMultiplier;
 	private Integer newTotalScore;
 	private Integer level;
 	private String category;
@@ -21,22 +19,6 @@ public class NextQuestionResponse {
 
 	public void setLastQuestionCorrect(Boolean lastQuestionCorrect) {
 		this.lastQuestionCorrect = lastQuestionCorrect;
-	}
-
-	public Integer getCurrentSpree() {
-		return currentSpree;
-	}
-
-	public void setCurrentSpree(Integer currentSpree) {
-		this.currentSpree = currentSpree;
-	}
-
-	public Integer getCurrentMultiplier() {
-		return currentMultiplier;
-	}
-
-	public void setCurrentMultiplier(Integer currentMultiplier) {
-		this.currentMultiplier = currentMultiplier;
 	}
 
 	public Integer getNewTotalScore() {

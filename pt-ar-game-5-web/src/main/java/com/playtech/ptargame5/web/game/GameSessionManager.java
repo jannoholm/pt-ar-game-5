@@ -108,14 +108,9 @@ public class GameSessionManager {
 		List<String> answers = new ArrayList<>(question.getAnswers());
 		Collections.shuffle(answers);
 
-		int currentSpree = calculateCurrentSpree(session.getQuestionsAnswered());
-		int currentMultiplier = calculateCurrentMultiplier(currentSpree);
-
 		NextQuestionResponse response = new NextQuestionResponse();
 		response.setAnswers(answers);
 		response.setCategory(question.getCategory());
-		response.setCurrentMultiplier(currentMultiplier);
-		response.setCurrentSpree(currentSpree);
 		response.setLastQuestionCorrect(wasLastAnswerCorrect);
 		response.setLevel(question.getLevel());
 		response.setNewTotalScore(calculateTotalScore(session.getQuestionsAnswered()));
@@ -181,20 +176,18 @@ public class GameSessionManager {
 
 		int nextQuestionLevel = 1;
 
-		if (wasLastAnswerCorrect) {
+		if (session.getQuestionsAnswered().size() > 0) {
+			// Player has answered at least one question
 			TriviaQuestionResult lastAnswer = session.getQuestionsAnswered().get(session.getQuestionsAnswered().size() - 1);
 			int lastQuestionLevel = lastAnswer.getQuestion().getLevel();
 
-			if (lastQuestionLevel <= 10) {
-				// Increase level by one each time
-				nextQuestionLevel = lastQuestionLevel + 1;
+			if (wasLastAnswerCorrect) {
+				// Increase level by one each time, but we can't go beyond level 10
+				nextQuestionLevel = Math.min(10, lastQuestionLevel + 1);
 			} else {
-				// We can't go beyond level 10
-				nextQuestionLevel = lastQuestionLevel;
+				// Decrease level by one, but we can't below level 1
+				nextQuestionLevel = Math.max(1, lastQuestionLevel - 1);
 			}
-		} else {
-			// Start from beginning if last answer was incorrect or it's a first question
-			nextQuestionLevel = 1;
 		}
 
 		// An easy naive way to get rid of duplicate questions: create a clone list and remove them
@@ -217,39 +210,15 @@ public class GameSessionManager {
 	private int calculateTotalScore(List<TriviaQuestionResult> answers) {
 
 		int totalScore = 0;
-		int currentSpree = 1;
 
+		// This could be optimized by storing latest score and just adding last question score on top
 		for (TriviaQuestionResult result : answers) {
 			if (result.isCorrect()) {
-
-				totalScore += calculateCurrentMultiplier(currentSpree) * result.getQuestion().getLevel() * 100;
-
-				currentSpree++;
-			} else {
-				currentSpree = 1;
+				totalScore += result.getQuestion().getLevel() * result.getQuestion().getLevel() * 100;
 			}
 		}
 
 		return totalScore;
-	}
-
-	private int calculateCurrentSpree(List<TriviaQuestionResult> questionsAnswered) {
-		int currentSpree = 1;
-
-		for (TriviaQuestionResult result : questionsAnswered) {
-			if (result.isCorrect()) {
-				currentSpree++;
-			} else {
-				currentSpree = 1;
-			}
-		}
-
-		return currentSpree;
-	}
-
-	private int calculateCurrentMultiplier(int currentSpree) {
-		// TODO More complex logic in defined starting from 10 questions
-		return currentSpree;
 	}
 
 	private int calculateCorrectAnswers(List<TriviaQuestionResult> questionsAnswered) {
