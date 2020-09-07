@@ -146,6 +146,7 @@
                 <span class="question-level-indicator-4" style="display: none;">|</span><br>
                 <span class="question-level-indicator-3" style="display: none;">|</span><br>
                 <span class="question-level-indicator-2" style="display: none;">|</span><br>
+                <span class="question-level-indicator-1" style="display: none;">|</span><br>
               </strong>
             </p>
           </div>
@@ -164,6 +165,7 @@
                 <span class="question-level-indicator-4" style="display: none;">|</span><br>
                 <span class="question-level-indicator-3" style="display: none;">|</span><br>
                 <span class="question-level-indicator-2" style="display: none;">|</span><br>
+                <span class="question-level-indicator-1" style="display: none;">|</span><br>
               </strong>
             </p>
           </div>
@@ -381,11 +383,15 @@
         $('#answer-content-4').text(data.answers[3]);
         $('#score-content').text(data.newTotalScore);
 
-        for (var i = 1; i <= 10; i++) {
-          if (i <= data.level) {
-            $('.question-level-indicator-' + i).show();
+        for (let levelIndicator = 1; levelIndicator <= 10; levelIndicator++) {
+          $('.question-level-indicator-' + levelIndicator).text('|');
+          if (levelIndicator == data.level && data.level != 1) {
+            $('.question-level-indicator-' + levelIndicator).text('x' + levelIndicator);
+            $('.question-level-indicator-' + levelIndicator).show();
+          } else if (levelIndicator < data.level) {
+            $('.question-level-indicator-' + levelIndicator).show();
           } else {
-            $('.question-level-indicator-' + i).hide();
+            $('.question-level-indicator-' + levelIndicator).hide();
           }
         }
       }
@@ -428,6 +434,7 @@
         $('#score-content').text(0);
 
         for (var i = 1; i <= 10; i++) {
+          $('.question-level-indicator-' + i).text('|');
           $('.question-level-indicator-' + i).hide();
         }
       }
