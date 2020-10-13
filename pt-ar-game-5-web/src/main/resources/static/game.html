@@ -99,7 +99,13 @@
     </div>
     <div class="col-10 col-xl-8 text-center">
       <!-- Place content here -->
-      <!-- START GAME -->
+      <!-- MENU -->
+      <div class="row">
+        <div class="col text-right">
+          <span id="sound-icon-content"><i data-feather="volume-x"></i></span>
+        </div>
+      </div>
+      <!-- SIGNUP FIRST -->
       <div id="signup-first-content" style="display:none;">
         <div class="row mb-5">
           <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
@@ -270,8 +276,11 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
     <script>
+
+      feather.replace()
 
       var nickname = null;
       var gameId = null;
@@ -286,6 +295,7 @@
       }
 
       const backgroundMusic = new Audio('trivia_track_final.mp3');
+      backgroundMusic.volume = 0;
 
       function startGame() {
         console.log('Starting game');
@@ -349,7 +359,7 @@
         $('#game-ended-content').hide();
         $('#game-feedback-content').hide();
 
-        backgroundMusic.currentTime=0;
+        backgroundMusic.currentTime = 0;
         backgroundMusic.play();
       }
 
@@ -493,6 +503,19 @@
             $('#answer-content-' + event.key).click();
           }
         })
+
+        $('#sound-icon-content').click(function () {
+          console.log('clicked');
+
+          if (backgroundMusic.volume == 0) {
+            $("#sound-icon-content svg.feather.feather-volume-x").replaceWith(feather.icons['volume-2'].toSvg());
+            backgroundMusic.volume = 1;
+          } else {
+            $("#sound-icon-content svg.feather.feather-volume-2").replaceWith(feather.icons['volume-x'].toSvg());
+            backgroundMusic.volume = 0;
+          }
+          feather.replace();
+        });
 
         // Feedback form
         $('#game-feedback-form').submit(function (event) {
