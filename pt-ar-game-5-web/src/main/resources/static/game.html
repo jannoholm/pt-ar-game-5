@@ -285,6 +285,8 @@
         $('#signup-first-content').show();
       }
 
+      const backgroundMusic = new Audio('trivia_track_final.mp3');
+
       function startGame() {
         console.log('Starting game');
 
@@ -346,6 +348,9 @@
         $('#game-started-content').show();
         $('#game-ended-content').hide();
         $('#game-feedback-content').hide();
+
+        backgroundMusic.currentTime=0;
+        backgroundMusic.play();
       }
 
       function firstQuestionErrorCallback(data) {
