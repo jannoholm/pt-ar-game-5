@@ -51,7 +51,7 @@ public class GameSessionManager {
 
 		// Extra time for each question, in-memory only, not saved to dB
 		for (TriviaQuestion question : questions) {
-
+			log.info("Calculating question extra time");
 			int totalLength = question.getQuestion().length();
 			for (String answer : question.getAnswers()) {
 				totalLength += answer.length();
@@ -61,6 +61,8 @@ public class GameSessionManager {
 				question.setExtraTime(7000);
 			} else if (totalLength > 140) {
 				question.setExtraTime(5000);
+			} else {
+				question.setExtraTime(0);
 			}
 		}
 
