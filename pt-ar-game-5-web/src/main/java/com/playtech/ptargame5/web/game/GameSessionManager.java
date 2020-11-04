@@ -49,6 +49,21 @@ public class GameSessionManager {
 	public void init() {
 		questions = db.getQuestions();
 
+		// Extra time for each question, in-memory only, not saved to dB
+		for (TriviaQuestion question : questions) {
+
+			int totalLength = question.getQuestion().length();
+			for (String answer : question.getAnswers()) {
+				totalLength += answer.length();
+			}
+
+			if (totalLength > 200) {
+				question.setExtraTime(7000);
+			} else if (totalLength > 140) {
+				question.setExtraTime(5000);
+			}
+		}
+
 		for (int i = 0; i < 12; i++) {
 			questionsPerLevel.put(i, new ArrayList<TriviaQuestion>());
 		}
@@ -82,7 +97,13 @@ public class GameSessionManager {
 
 		GameSessionData session = sessions.get(request.getGameId());
 
-		if (System.currentTimeMillis() - session.getSessionStartTime() > 65 * 1000) {
+		int extraTimeAdded = 0;
+		for (TriviaQuestion question : session.getQuestionsAsked()) {
+			extraTimeAdded += question.getExtraTime();
+		}
+
+		if (System.currentTimeMillis() - session.getSessionStartTime() > 65 * 1000 + extraTimeAdded) {
+			// 60 sec is the base time, 5 sec is buffer and extra time is from all questions extra total
 			throw new IllegalStateException("Session time is over");
 		}
 
@@ -111,6 +132,7 @@ public class GameSessionManager {
 		NextQuestionResponse response = new NextQuestionResponse();
 		response.setAnswers(answers);
 		response.setCategory(question.getCategory());
+		response.setExtraTimeAdded(question.getExtraTime());
 		response.setLastQuestionCorrect(wasLastAnswerCorrect);
 		response.setLevel(question.getLevel());
 		response.setNewTotalScore(calculateTotalScore(session.getQuestionsAnswered()));

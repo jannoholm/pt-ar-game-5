@@ -17,6 +17,7 @@ public class GameSessionData {
 	private String gameId;
 	private long sessionStartTime;
 	private long lastQuestionTime;
+	private long extraQuestionsTime;
 	private Player player;
 	private List<TriviaQuestion> questionsAsked = new ArrayList<>();
 	private List<TriviaQuestionResult> questionsAnswered = new ArrayList<>();
@@ -43,6 +44,14 @@ public class GameSessionData {
 
 	public void setLastQuestionTime(long lastQuestionTime) {
 		this.lastQuestionTime = lastQuestionTime;
+	}
+
+	public long getExtraQuestionsTime() {
+		return extraQuestionsTime;
+	}
+
+	public void setExtraQuestionsTime(long extraQuestionsTime) {
+		this.extraQuestionsTime = extraQuestionsTime;
 	}
 
 	public Player getPlayer() {

@@ -14,6 +14,7 @@ public class TriviaQuestion {
 	private String question;
 	private Integer level;
 	private String category;
+	private Integer extraTime;
 	private List<String> correct;
 	private List<String> answers;
 
@@ -39,6 +40,14 @@ public class TriviaQuestion {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public Integer getExtraTime() {
+		return extraTime;
+	}
+
+	public void setExtraTime(Integer extraTime) {
+		this.extraTime = extraTime;
 	}
 
 	public List<String> getCorrect() {

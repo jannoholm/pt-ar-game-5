@@ -8,6 +8,7 @@ public class NextQuestionResponse {
 
 	private Boolean lastQuestionCorrect;
 	private Integer newTotalScore;
+	private Integer extraTimeAdded;
 	private Integer level;
 	private String category;
 	private String question;
@@ -27,6 +28,14 @@ public class NextQuestionResponse {
 
 	public void setNewTotalScore(Integer newTotalScore) {
 		this.newTotalScore = newTotalScore;
+	}
+
+	public Integer getExtraTimeAdded() {
+		return extraTimeAdded;
+	}
+
+	public void setExtraTimeAdded(Integer extraTimeAdded) {
+		this.extraTimeAdded = extraTimeAdded;
 	}
 
 	public Integer getLevel() {

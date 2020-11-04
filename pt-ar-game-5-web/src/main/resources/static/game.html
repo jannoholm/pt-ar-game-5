@@ -24,35 +24,6 @@
       text-align: center;
     }
 
-    @keyframes auto-progress {
-      0% {
-        width: 0%;
-      }
-
-      100% {
-        width: 100%;
-      }
-    }
-
-    .progress-bar {
-      background-color: #1a1a1a;
-      height: 2vh;
-      width: 100%;
-      border-radius: 5px;
-      box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
-    }
-
-    .progress-bar-inner {
-      display: block;
-      height: 2vh;
-      width: 0%;
-      background-color: #34c2e3;
-      border-radius: 3px;
-      box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
-      position: relative;
-      animation: auto-progress 60s linear;
-    }
-
     .answer-button-content {
       cursor: pointer;
     }
@@ -125,18 +96,22 @@
       </div>
       <!-- GAME STARTED -->
       <div id="game-started-content" style="display:none;">
-        <div class="row">
+        <div class="row align-items-end">
           <div class="col">
-            <p class="text-white" style="font-size: 3vh"><strong>SCORE:&nbsp;</strong><strong id="score-content">2232</strong></p>
+            <p style="font-size: 2vh; color: #009933; display: none;" id="extra-seconds-content">
+              <strong>+<span id="extra-seconds-time">5</span> SECONDS</strong>
+            </p>
+          </div>
+          <div class="col">
+            <p class="text-white" style="font-size: 3vh"><strong>SCORE:&nbsp;</strong><strong id="score-content">0</strong></p>
+          </div>
+          <div class="col">
+            <p class="text-white" style="font-size: 2vh"><strong>TIME:&nbsp;</strong><strong id="progress-bar-countdown">60</strong></p>
           </div>
         </div>
-        <div class="row my-3">
-          <div class="col">
-            <div class="progress-bar-container">
-              <div class="progress-bar stripes animated reverse slower">
-                <span class="progress-bar-inner"></span>
-              </div>
-            </div>
+        <div class="row mb-5 w-100">
+          <div class="col text-center w-100">
+            <div class="w-100" id="progress-bar-container"></div>
           </div>
         </div>
         <div class="row" style="height: 30vh">
@@ -278,6 +253,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
+    <!-- Progress bar -->
+    <script src="js/progressbar.js-1.1.0/dist/progressbar.min.js"></script>
+
     <script>
 
       feather.replace()
@@ -294,8 +272,67 @@
         $('#signup-first-content').show();
       }
 
+      // Game music
+
       const backgroundMusic = new Audio('trivia_track_final.mp3');
       backgroundMusic.volume = 0;
+
+      // Time left progress bar
+      var progressBar = null;
+      var progressBarCountDown = null;
+      var gameStartTime = 0;
+      const gameMaxTime = 60000;
+      var gameExtraTime = 5000;
+
+      function animateProgressBar() {
+
+        progressBar.path.setAttribute('stroke', '#FFEA82');
+
+        const gameCurrentTime = Date.now();
+        const progress = (gameCurrentTime - gameStartTime) / (gameMaxTime + gameExtraTime);
+
+        progressBar.animate(1, {
+          duration: (1 - progress) * gameMaxTime
+        }, function () {
+          // Max time reached
+          console.log('Progress bar finished');
+          progressBar.set(0);
+          clearInterval(progressBarCountDown);
+          endGameSession();
+        });
+      }
+
+      function animateProgressBarExtraTime(newExtraTime) {
+        console.log('Pausing progress bar animation for extra time=' + newExtraTime);
+        gameExtraTime = gameExtraTime + newExtraTime;
+        progressBar.path.setAttribute('stroke', '#009933');
+        progressBar.pause(); // According to doc, it should not work, go figure...
+        progressBar.stop();
+        setTimeout(function () {
+          animateProgressBar();
+        }, newExtraTime)
+      }
+
+      function animateExtraTimeSeconds(newExtraTime) {
+        $('#extra-seconds-time').text(Math.round(newExtraTime / 1000));
+        $('#extra-seconds-content').show();
+        console.log('Extra time seconds countdown animation=' + newExtraTime);
+        if (newExtraTime > 0) {
+          // Repeate process after 1 second
+          setTimeout(function () { animateExtraTimeSeconds(newExtraTime - 1000) }, 1000);
+        } else {
+          $('#extra-seconds-time').text(5);
+          $('#extra-seconds-content').hide();
+        }
+      }
+
+      function animateProgressBarCountdown() {
+        const timeLeftMillis = gameMaxTime - gameMaxTime * progressBar.value();
+        const timeLeft = Math.round(timeLeftMillis / 1000);
+        $('#progress-bar-countdown').text('' + timeLeft);
+      }
+
+      // Business logic
 
       function startGame() {
         console.log('Starting game');
@@ -361,6 +398,11 @@
 
         backgroundMusic.currentTime = 0;
         backgroundMusic.play();
+
+        gameStartTime = Date.now();
+
+        animateProgressBar();
+        progressBarCountDown = setInterval(animateProgressBarCountdown, 250); // Update every 0.25 seconds
       }
 
       function firstQuestionErrorCallback(data) {
@@ -409,6 +451,12 @@
             $('.question-level-indicator-' + levelIndicator).hide();
           }
         }
+
+        const extraTime = data.extraTimeAdded;
+        if (extraTime > 0) {
+          animateProgressBarExtraTime(extraTime);
+          animateExtraTimeSeconds(extraTime);
+        }
       }
 
       function submitAnswerErrorCallback(data) {
@@ -447,6 +495,8 @@
         $('#game-ended-content').show();
         $('#game-feedback-content').show();
         $('#score-content').text(0);
+        $('progress-bar-countdown').text(0);
+        gameExtraTime = 0;
 
         for (var i = 1; i <= 10; i++) {
           $('.question-level-indicator-' + i).text('|');
@@ -493,9 +543,16 @@
           submitAnswer($(event.target).parent().find('strong').text())
         });
 
-        $('.progress-bar-inner').on('animationend', function () {
-          console.log('Progress bar finished');
-          endGameSession();
+        progressBar = new ProgressBar.Line('#progress-bar-container', {
+          easing: 'linear',
+          strokeWidth: 2,
+          color: '#FFEA82',
+          trailColor: '#EEE',
+          trailWidth: 1,
+          svgStyle: {
+            width: '100%',
+            height: '100%'
+          }
         });
 
         $(document).keypress(function (e) {
