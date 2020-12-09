@@ -282,14 +282,16 @@
       var progressBarCountDown = null;
       var gameStartTime = 0;
       const gameMaxTime = 60000;
-      var gameExtraTime = 5000;
+      var gameTotalExtraTime = 0;
+      var currentExtraTimeTimeout = null;
+      var currentExtraTimeEnd = 0; // This  can change during current extra time runtime
 
       function animateProgressBar() {
 
         progressBar.path.setAttribute('stroke', '#FFEA82');
 
         const gameCurrentTime = Date.now();
-        const progress = (gameCurrentTime - gameStartTime) / (gameMaxTime + gameExtraTime);
+        const progress = (gameCurrentTime - gameStartTime) / (gameMaxTime + gameTotalExtraTime);
 
         progressBar.animate(1, {
           duration: (1 - progress) * gameMaxTime
@@ -302,27 +304,46 @@
         });
       }
 
-      function animateProgressBarExtraTime(newExtraTime) {
+      function triggerNewExtraTime(newExtraTime) {
+
         console.log('Pausing progress bar animation for extra time=' + newExtraTime);
-        gameExtraTime = gameExtraTime + newExtraTime;
+        gameTotalExtraTime = gameTotalExtraTime + newExtraTime;
+
+        if (currentExtraTimeEnd == 0) {
+          currentExtraTimeEnd = Date.now();
+        }
+
+        currentExtraTimeEnd = currentExtraTimeEnd + newExtraTime;
+
         progressBar.path.setAttribute('stroke', '#009933');
         progressBar.pause(); // According to doc, it should not work, go figure...
         progressBar.stop();
-        setTimeout(function () {
-          animateProgressBar();
-        }, newExtraTime)
+
+        extraTimeLoop();
       }
 
-      function animateExtraTimeSeconds(newExtraTime) {
-        $('#extra-seconds-time').text(Math.round(newExtraTime / 1000));
-        $('#extra-seconds-content').show();
-        console.log('Extra time seconds countdown animation=' + newExtraTime);
-        if (newExtraTime > 0) {
-          // Repeate process after 1 second
-          setTimeout(function () { animateExtraTimeSeconds(newExtraTime - 1000) }, 1000);
-        } else {
+      function extraTimeLoop() {
+
+        const extraTimeLeft = currentExtraTimeEnd - Date.now();
+        console.log('Extra time loop, time left=' + extraTimeLeft);
+
+        if (currentExtraTimeEnd < Date.now()) {
+          console.log('Extra time loop, restarting normal animation');
+
+          currentExtraTimeEnd = 0;
+
           $('#extra-seconds-time').text(5);
           $('#extra-seconds-content').hide();
+          animateProgressBar();
+        } else {
+          console.log('Updating extra time value and looping next loop in ' + Math.min(extraTimeLeft, 1000));
+
+          $('#extra-seconds-time').text(Math.round(extraTimeLeft / 1000));
+          $('#extra-seconds-content').show();
+
+          // Rinse and repeat
+          clearTimeout(currentExtraTimeTimeout);
+          currentExtraTimeTimeout = setTimeout(function () { extraTimeLoop() }, Math.min(extraTimeLeft, 1000));
         }
       }
 
@@ -454,8 +475,7 @@
 
         const extraTime = data.extraTimeAdded;
         if (extraTime > 0) {
-          animateProgressBarExtraTime(extraTime);
-          animateExtraTimeSeconds(extraTime);
+          triggerNewExtraTime(extraTime);
         }
       }
 
@@ -496,7 +516,7 @@
         $('#game-feedback-content').show();
         $('#score-content').text(0);
         $('progress-bar-countdown').text(0);
-        gameExtraTime = 0;
+        gameTotalExtraTime = 0;
 
         for (var i = 1; i <= 10; i++) {
           $('.question-level-indicator-' + i).text('|');
