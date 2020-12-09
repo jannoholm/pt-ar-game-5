@@ -252,6 +252,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
 
     <!-- Progress bar -->
     <script src="js/progressbar.js-1.1.0/dist/progressbar.min.js"></script>
@@ -273,9 +274,64 @@
       }
 
       // Game music
+      var sounds = [
+        { src: '1.mp3', id: 'sound-1' },
+        { src: '2.mp3', id: 'sound-2' },
+        { src: '3.mp3', id: 'sound-3' },
+        { src: '4.mp3', id: 'sound-4' },
+        { src: '5.mp3', id: 'sound-5' },
+        { src: '6.mp3', id: 'sound-6' },
+      ];
 
-      const backgroundMusic = new Audio('trivia_track_final.mp3');
-      backgroundMusic.volume = 0;
+      createjs.Sound.registerSounds(sounds, 'sounds/');
+      soundTrack1 = createjs.Sound.createInstance('sound-1');
+      soundTrack2 = createjs.Sound.createInstance('sound-2');
+      soundTrack3 = createjs.Sound.createInstance('sound-3');
+      soundTrack4 = createjs.Sound.createInstance('sound-4');
+      soundTrack5 = createjs.Sound.createInstance('sound-5');
+      soundTrack6 = createjs.Sound.createInstance('sound-6');
+      createjs.Sound.muted = true;
+
+      var audioLoopTimeout = null;
+
+      function startAudio() {
+        soundTrack1.play({ volume: 0, loop: -1, offset: 0 });
+        soundTrack2.play({ volume: 0, loop: -1, offset: 0 });
+        soundTrack3.play({ volume: 0, loop: -1, offset: 0 });
+        soundTrack4.play({ volume: 0, loop: -1, offset: 0 });
+        soundTrack5.play({ volume: 0, loop: -1, offset: 0 });
+        soundTrack6.play({ volume: 0, loop: -1, offset: 0 });
+
+        clearTimeout(audioLoopTimeout);
+        audioLoop();
+      }
+
+
+      function audioLoop() {
+
+        const timeLeft = gameMaxTime + gameTotalExtraTime - (Date.now() - gameStartTime);
+        console.log('Sound loop, time left=' + timeLeft);
+
+        if (timeLeft > 40000) {
+          soundTrack1.volume = 1;
+        } else if (timeLeft > 30000) {
+          soundTrack1.volume = 0;
+          soundTrack2.volume = 1;
+
+        } else if (timeLeft > 20000) {
+          soundTrack2.volume = 0;
+          soundTrack3.volume = 1;
+
+        } else if (timeLeft > 10000) {
+          soundTrack3.volume = 0;
+          soundTrack4.volume = 1;
+        } else {
+          soundTrack4.volume = 0;
+          soundTrack5.volume = 1;
+        }
+
+        audioLoopTimeout = setTimeout(function () { audioLoop() }, 10000);
+      }
 
       // Time left progress bar
       var progressBar = null;
@@ -298,8 +354,15 @@
         }, function () {
           // Max time reached
           console.log('Progress bar finished');
+          console.log('Stopping sound');
+          clearTimeout(audioLoopTimeout);
+          createjs.Sound.stop();
+
+          console.log('Resetting progressbar');
           progressBar.set(0);
           clearInterval(progressBarCountDown);
+
+          console.log('Triggering end game session');
           endGameSession();
         });
       }
@@ -417,10 +480,8 @@
         $('#game-ended-content').hide();
         $('#game-feedback-content').hide();
 
-        backgroundMusic.currentTime = 0;
-        backgroundMusic.play();
-
         gameStartTime = Date.now();
+        startAudio();
 
         animateProgressBar();
         progressBarCountDown = setInterval(animateProgressBarCountdown, 250); // Update every 0.25 seconds
@@ -584,12 +645,13 @@
         $('#sound-icon-content').click(function () {
           console.log('clicked');
 
-          if (backgroundMusic.volume == 0) {
+
+          if (createjs.Sound.muted) {
             $("#sound-icon-content svg.feather.feather-volume-x").replaceWith(feather.icons['volume-2'].toSvg());
-            backgroundMusic.volume = 1;
+            createjs.Sound.muted = false;
           } else {
             $("#sound-icon-content svg.feather.feather-volume-2").replaceWith(feather.icons['volume-x'].toSvg());
-            backgroundMusic.volume = 0;
+            createjs.Sound.muted = true;
           }
           feather.replace();
         });
