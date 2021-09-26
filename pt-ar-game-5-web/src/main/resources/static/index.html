@@ -34,13 +34,21 @@
 
 
       /* Center and scale the image nicely */
-      background-color: #09060F;
+      background-color: #09060f00;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-position: center;
       background-size: contain;
       opacity: .8;
     }
+  </style>
+  
+      <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+  <style>
+      html, body, pre, code, kbd, samp {
+          font-family: 'Press Start 2P', serif;;
+      }
   </style>
 
 </head>
@@ -61,7 +69,7 @@
             <tr>
               <th>Nickname</th>
               <th>Position</th>
-              <th>Best score</th>
+              <th>Total score</th>
               <th>Correct answers (%)</th>
               <th>Total questions</th>
               <th>Games played</th>
@@ -71,7 +79,7 @@
             <tr>
               <th>Nickname</th>
               <th>Position</th>
-              <th>Best score</th>
+              <th>Total score</th>
               <th>Correct answers (%)</th>
               <th>Total questions</th>
               <th>Games played</th>
@@ -82,17 +90,17 @@
     </div>
     <div class="row mt-3" style="display: none;" id="signup-container">
       <div class="col text-center">
-        <div class="col text-center"><a class="btn btn-primary" href="signup.html" role="button">Register to play</a></div>
+        <div class="col text-center"><a class="nes-btn is-primary" href="signup.html" role="button">Register to play</a></div>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col text-center" style="display: none;" id="play-the-game-container">
-        <div class="col text-center"><a class="btn btn-primary" href="game.html" role="button">Play the game!</a></div>
+        <div class="col text-center"><a class="nes-btn is-primary" href="game.html" role="button">Play the game!</a></div>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col text-center">
-        <div class="col text-center"><a class="btn btn-primary" href="guestquestion.html" role="button">Add your trivia question</a></div>
+        <div class="col text-center"><a class="nes-btn is-primary" href="guestquestion.html" role="button" style="display: none;">Add your trivia question</a></div>
       </div>
     </div>
   </main><!-- /.container -->

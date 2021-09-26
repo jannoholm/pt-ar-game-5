@@ -18,6 +18,17 @@
       padding-top: 5rem;
       /* color: #fff; */
     }
+	
+	@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution:0.001dpcm) {
+    .nes-container.is-rounded.is-dark {
+        border-image-repeat:initial !important;
+    }
+	}
+	@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution:0.001dpcm) {
+		.nes-container.is-rounded {
+			border-image-repeat:initial !important;
+		}
+	}
 
     .starter-template {
       padding: 3rem 1.5rem;
@@ -52,13 +63,21 @@
 
 
       /* Center and scale the image nicely */
-      background-color: #09060F;
+      background-color: #09060f00;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-position: center;
       background-size: contain;
-      opacity: .8;
+      opacity: .95;
     }
+  </style>
+  
+  <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+  <style>
+      html, body, pre, code, kbd, samp {
+          font-family: 'Press Start 2P', serif;;
+      }
   </style>
 
 </head>
@@ -88,33 +107,34 @@
       <!-- START GAME -->
       <div id="start-game-content" style="display:none;">
         <div class="row mb-5">
-          <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
+          <div class="col text-center"><a class="nes-btn is-primary" href="index.html" role="button">Back to leaderboard</a></div>
         </div>
         <div class="row mb-5">
-          <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button" id="start-game-button">START NEW GAME</a></div>
+          <div class="col text-center"><a class="nes-btn is-primary" href="index.html" role="button" id="start-game-button">START NEW GAME</a></div>
         </div>
       </div>
       <!-- GAME STARTED -->
       <div id="game-started-content" style="display:none;">
-        <div class="row align-items-end">
-          <div class="col">
+        <div class="row align-items-end" style="display: table; width: 100%;">
+          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 33%;">
             <p style="font-size: 2vh; color: #009933; display: none;" id="extra-seconds-content">
               <strong>+<span id="extra-seconds-time">5</span> SECONDS</strong>
             </p>
           </div>
-          <div class="col">
+          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 33%;">
             <p class="text-white" style="font-size: 3vh"><strong>SCORE:&nbsp;</strong><strong id="score-content">0</strong></p>
           </div>
-          <div class="col">
+          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 33%;">
             <p class="text-white" style="font-size: 2vh"><strong>TIME:&nbsp;</strong><strong id="progress-bar-countdown">60</strong></p>
           </div>
         </div>
         <div class="row mb-5 w-100">
           <div class="col text-center w-100">
-            <div class="w-100" id="progress-bar-container"></div>
+            <div class="w-100" id="progress-bar-container" style="display: none;"></div>
+            <progress id="nes-progress-bar" class="nes-progress is-warning" value="30" max="100"></progress>
           </div>
         </div>
-        <div class="row" style="height: 30vh">
+        <div class="row" style="/*height: 30vh*/">
           <div class="col-1 align-self-end">
             <p style="font-size: 2vh;">
               <strong id="question-level-indicator-left">
@@ -131,10 +151,10 @@
               </strong>
             </p>
           </div>
-          <div class="col-10 align-self-center">
+          <div class="col-10 align-self-center nes-container is-rounded is-dark">
             <p style="width: 100%; font-size: 4vh"><strong id="question-content">Question placeholder</strong></p>
           </div>
-          <div class="col-1 align-self-end">
+          <div class="col-1 align-self-end" style="display: none;">
             <p style="font-size: 2vh;">
               <strong id="question-level-indicator-right">
                 <span class="question-level-indicator-10" style="display: none;">|</span><br>
@@ -154,32 +174,32 @@
         <div class="row" style="height: 15vh">
           <!--  rgb(226, 27, 60)  rgb(19, 104, 206)  rgb(208, 159, 54)  rgb(38, 137, 12)-->
           <div class="col-6">
-            <div class="row h-100 m-0 answer-button-content" style="background: rgb(226, 27, 60); border-radius: 1em;">
+            <div class="row answer-button-content nes-container is-rounded" style="background: rgb(226, 27, 60)">
               <div class="col align-self-center">
-                <p style="font-size: 3vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
+                <p style="font-size: 2vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
-            <div class="row h-100 m-0 answer-button-content" style="background: rgb(19, 104, 206); border-radius: 1em;">
+            <div class="row answer-button-content nes-container is-rounded" style="background: rgb(19, 104, 206)">
               <div class="col align-self-center">
-                <p style="font-size: 3vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
+                <p style="font-size: 2vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
               </div>
             </div>
           </div>
         </div>
         <div class="row my-4" style="height: 15vh">
           <div class="col-6">
-            <div class="row h-100 m-0 answer-button-content" style="background: rgb(208, 159, 54); border-radius: 1em;">
+            <div class="row answer-button-content nes-container is-rounded" style="background: rgb(208, 159, 54)">
               <div class="col align-self-center">
-                <p style="font-size: 3vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
+                <p style="font-size: 2vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
-            <div class="row h-100 m-0 answer-button-content" style="background: rgb(38, 137, 12); border-radius: 1em;">
+            <div class="row answer-button-content nes-container is-rounded" style="background: rgb(38, 137, 12)">
               <div class="col align-self-center">
-                <p style="font-size: 3vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
+                <p style="font-size: 2vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
               </div>
             </div>
           </div>
@@ -223,7 +243,7 @@
           </div>
           <div class="row mt-1 justify-content-around">
             <div class="col-xl-4">
-              <button type="submit" class="btn btn-block btn-warning font-weight-bold">Submit feedback</button>
+              <button type="submit" class="btn-block nes-btn is-warning font-weight-bold">Submit feedback</button>
             </div>
           </div>
           <div class="row mt-3 justify-content-center">
@@ -253,6 +273,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+
 
     <!-- Progress bar -->
     <script src="js/progressbar.js-1.1.0/dist/progressbar.min.js"></script>
@@ -341,8 +362,17 @@
       var gameTotalExtraTime = 0;
       var currentExtraTimeTimeout = null;
       var currentExtraTimeEnd = 0; // This  can change during current extra time runtime
+      
+      var progressUpdateInterval;
+      var progBar = $("#nes-progress-bar");
 
       function animateProgressBar() {
+    	  
+    	progBar[0].setAttribute("value", 0);
+    	progressUpdateInterval = window.setInterval(function(){
+    		  console.log("update here!", Math.round(progressBar.value()*100));
+    		  progBar[0].setAttribute("value", Math.round(progressBar.value()*100));
+    	}, 100);
 
         progressBar.path.setAttribute('stroke', '#FFEA82');
 
@@ -361,6 +391,8 @@
           console.log('Resetting progressbar');
           progressBar.set(0);
           clearInterval(progressBarCountDown);
+          
+          clearInterval(progressUpdateInterval);
 
           console.log('Triggering end game session');
           endGameSession();
@@ -561,6 +593,8 @@
           error: endGameErrorCallback,
           dataType: 'json'
         });
+        
+        clearInterval(progressUpdateInterval);
 
       }
 

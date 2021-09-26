@@ -33,7 +33,7 @@
 
 
       /* Center and scale the image nicely */
-      background-color: #09060F;
+      background-color: #09060f00;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-position: center;
@@ -41,22 +41,30 @@
       opacity: .8;
     }
   </style>
+  
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+  <style>
+      html, body, pre, code, kbd, samp {
+          font-family: 'Press Start 2P', serif;;
+      }
+  </style>
 
 </head>
 
 <body class="bg container">
 
   <div class="row text-light">
-    <div class="col-3 col-xl-4"></div>
-    <div class="col-6 col-xl-4">
+    <div class="col-2 col-xl-2"></div>
+    <div class="col-8 col-xl-8">
       <form action="login.html" method="POST">
         <div class="input-group input-group-lg">
           <input type="hidden" name="username" class="form-control" placeholder="Username" aria-label="Username" value="guest">
         </div>
         <div class="input-group input-group-lg">
-          <input type="password" name="password" class="form-control" placeholder="Enter password" aria-label="Enter password">
+          <input type="password" name="password" class="form-control nes-input" placeholder="Enter password" aria-label="Enter password">
           <div class="input-group-append">
-            <button type="submit" class="btn btn-warning font-weight-bold" type="button">Enter</button>
+            <button type="submit" class="btn btn-warning font-weight-bold nes-btn is-warning" type="button">Enter</button>
           </div>
         </div>
       </form>
@@ -68,7 +76,7 @@
         </div>
       </div>
     </div>
-    <div class="col-3 col-xl-4"></div>
+    <div class="col-2 col-xl-2"></div>
   </div>
 
   <!-- Bootstrap core JavaScript

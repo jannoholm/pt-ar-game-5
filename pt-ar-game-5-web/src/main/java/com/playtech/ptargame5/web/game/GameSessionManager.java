@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.ListIterator;
 
 import javax.annotation.PostConstruct;
 
@@ -57,10 +58,10 @@ public class GameSessionManager {
 				totalLength += answer.length();
 			}
 
-			if (totalLength > 200) {
-				question.setExtraTime(7000);
-			} else if (totalLength > 140) {
-				question.setExtraTime(5000);
+			if (totalLength > 400) {
+				question.setExtraTime(4000);
+			} else if (totalLength > 200) {
+				question.setExtraTime(2000);
 			} else {
 				question.setExtraTime(0);
 			}
@@ -213,20 +214,37 @@ public class GameSessionManager {
 				nextQuestionLevel = Math.max(1, lastQuestionLevel - 1);
 			}
 		}
-
-		// An easy naive way to get rid of duplicate questions: create a clone list and remove them
-		List<TriviaQuestion> poolOfQuestions = new ArrayList<>(questionsPerLevel.get(nextQuestionLevel));
-		poolOfQuestions.removeAll(session.getQuestionsAsked());
+		
+		List<TriviaQuestion> poolOfQuestions = new ArrayList<>();
+		
+		for (int i = 0; i < 12; i++) {
+			// An easy naive way to get rid of duplicate questions: create a clone list and remove them
+			poolOfQuestions = new ArrayList<>(questionsPerLevel.get(nextQuestionLevel));
+			poolOfQuestions.removeAll(session.getQuestionsAsked());
+			
+			if (poolOfQuestions.size() == 0) {
+				//in case we overflow the question level return to the beginning
+				if (nextQuestionLevel > 10)
+					nextQuestionLevel = 0;
+				else
+					nextQuestionLevel ++;
+				continue;
+			}
+				
+		}
+		
 
 		// If player is not interested in development, skip questions related to development
 		if (session.getPlayer().getInterests() == null || !session.getPlayer().getInterests().getDevelopment()) {
 			poolOfQuestions.removeIf(question -> question.getCategory().equals("Software Development"));
 		}
 
+		/*
 		if (poolOfQuestions.size() < 1) {
 			// If for some obscure reason we run out of questions, fallback to default list
-			poolOfQuestions = questionsPerLevel.get(nextQuestionLevel);
+			poolOfQuestions = questionsPerLevel.get(nextQuestionLevel > 1 ? nextQuestionLevel - 1: nextQuestionLevel);
 		}
+		*/
 
 		return poolOfQuestions.get(r.nextInt(poolOfQuestions.size()));
 	}
@@ -235,12 +253,28 @@ public class GameSessionManager {
 
 		int totalScore = 0;
 
+		/*
 		// This could be optimized by storing latest score and just adding last question score on top
 		for (TriviaQuestionResult result : answers) {
 			if (result.isCorrect()) {
 				totalScore += result.getQuestion().getLevel() * result.getQuestion().getLevel() * 100;
 			}
 		}
+		*/
+		
+		// reverse iterate to find combo
+		ListIterator<TriviaQuestionResult> itr = answers.listIterator(answers.size());
+		int multiplier = 0;
+		while (itr.hasPrevious()) {
+            TriviaQuestionResult result = itr.previous();
+                        
+			if (result.isCorrect()) {
+				multiplier ++;
+				totalScore += multiplier * 100;
+			} else {
+				multiplier = multiplier - 2 < 0 ? 0 : multiplier - 2;
+			}
+        }
 
 		return totalScore;
 	}
