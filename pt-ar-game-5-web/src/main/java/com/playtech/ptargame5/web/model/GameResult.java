@@ -8,7 +8,7 @@ import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
 @Document(collection = "games", schemaVersion = "1.0")
-public class GameResult {
+public class GameResult implements Comparable<GameResult> {
 
 	@Id
 	private String gameId;
@@ -16,8 +16,13 @@ public class GameResult {
 	private Integer questionsAttempted;
 	private Integer correctAnswers;
 	private Integer totalScore;
+	long time;
 	private List<GameResultAnswer> answers;
-
+	
+	public GameResult(){
+	  this.time = System.currentTimeMillis();
+	}
+	
 	public String getGameId() {
 		return gameId;
 	}
@@ -66,8 +71,28 @@ public class GameResult {
 		this.answers = answers;
 	}
 
-	@Override
+	public long getTime(){
+	  return time;
+	}
+	
+	public void setTime(long time) {
+    this.time = time;
+  }
+
+  @Override
 	public String toString() {
 		return LogUtils.toString(this);
 	}
+
+  @Override
+  public int compareTo(GameResult o) {
+    int c = Long.compare(time, o.time);
+    if (c!=0)
+      return c;
+    c = nickname.compareTo(o.getNickname());
+    if (c!=0)
+      return c;
+    return gameId.compareTo(o.gameId);  
+  }
+  
 }

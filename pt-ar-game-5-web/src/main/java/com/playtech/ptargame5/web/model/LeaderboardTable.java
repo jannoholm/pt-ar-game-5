@@ -6,17 +6,17 @@ import com.playtech.ptargame5.web.LogUtils;
 
 public class LeaderboardTable {
 
-	private List<LeaderboardEntry> data;
+	private final List<LeaderboardEntry> data;
+
+	public LeaderboardTable(List<LeaderboardEntry> data) {
+    this.data = data;
+  }
 
 	public List<LeaderboardEntry> getData() {
 		return data;
 	}
 
-	public void setData(List<LeaderboardEntry> data) {
-		this.data = data;
-	}
-
-	@Override
+  @Override
 	public String toString() {
 		return LogUtils.toString(this);
 	}

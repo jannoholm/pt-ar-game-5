@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.ListIterator;
 
 import javax.annotation.PostConstruct;
@@ -45,6 +46,9 @@ public class GameSessionManager {
 	private Map<Integer, List<TriviaQuestion>> questionsPerLevel = new HashMap<>();
 
 	private Map<String, GameSessionData> sessions = new HashMap<>();
+	
+	public static final int GAME_LENGTH_SECONDS = 120;
+	public static final int MAX_QUESTIONS_PER_GAME = GAME_LENGTH_SECONDS;
 
 	@PostConstruct
 	public void init() {
@@ -105,9 +109,13 @@ public class GameSessionManager {
 			extraTimeAdded += question.getExtraTime();
 		}
 
-		if (System.currentTimeMillis() - session.getSessionStartTime() > 65 * 1000 + extraTimeAdded) {
+		if (System.currentTimeMillis() - session.getSessionStartTime() > (GAME_LENGTH_SECONDS + 5) * 1000 + extraTimeAdded) {
 			// 60 sec is the base time, 5 sec is buffer and extra time is from all questions extra total
 			throw new IllegalStateException("Session time is over");
+		}
+		
+		if (session.getQuestionsAsked().size() > MAX_QUESTIONS_PER_GAME) {
+			throw new IllegalStateException("Too many questions per session");
 		}
 
 		boolean wasLastAnswerCorrect = false;
@@ -220,7 +228,13 @@ public class GameSessionManager {
 		for (int i = 0; i < 12; i++) {
 			// An easy naive way to get rid of duplicate questions: create a clone list and remove them
 			poolOfQuestions = new ArrayList<>(questionsPerLevel.get(nextQuestionLevel));
-			poolOfQuestions.removeAll(session.getQuestionsAsked());
+			
+			List<TriviaQuestion> correctAnswers = session.getQuestionsAnswered().stream()
+					.filter(e -> e.getQuestion().getCorrect().contains(e.getPlayerInput()))
+					.map(TriviaQuestionResult::getQuestion)
+					.collect(Collectors.toList());
+			
+			poolOfQuestions.removeAll(correctAnswers);
 			
 			if (poolOfQuestions.size() == 0) {
 				//in case we overflow the question level return to the beginning
@@ -269,7 +283,7 @@ public class GameSessionManager {
             TriviaQuestionResult result = itr.previous();
                         
 			if (result.isCorrect()) {
-				multiplier ++;
+				multiplier =  multiplier > 8 ? multiplier : multiplier + 1;
 				totalScore += multiplier * 100;
 			} else {
 				multiplier = multiplier - 2 < 0 ? 0 : multiplier - 2;

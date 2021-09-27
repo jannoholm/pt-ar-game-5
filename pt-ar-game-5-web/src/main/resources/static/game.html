@@ -53,6 +53,9 @@
       /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
       user-select: none;
     }
+    
+    .red {color: #FF0000;}
+    .bold { font-weight: bold;}
 
     .bg {
       /* The image used */
@@ -73,17 +76,19 @@
   </style>
   
   <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
-  <style>
+  <link rel="stylesheet" href="fonts/retro/stylesheet.css"/>
+  
+  
+  <style type="text/css">
       html, body, pre, code, kbd, samp {
-          font-family: 'Press Start 2P', serif;;
+          font-family: 'manaspaceregular';
       }
   </style>
 
 </head>
 
 <body class="bg noselect">
-  <div class="row text-white">
+  <div class="row text-white" style="margin-left: 0px; margin-right: 0px;">
     <div class="col-1 col-xl-2">
       <!-- Responsive spacing on the edges -->
     </div>
@@ -92,7 +97,7 @@
       <!-- MENU -->
       <div class="row">
         <div class="col text-right">
-          <span id="sound-icon-content"><i data-feather="volume-x"></i></span>
+          <span id="sound-icon-content" style="color: black;"><i data-feather="volume-2"></i></span>
         </div>
       </div>
       <!-- SIGNUP FIRST -->
@@ -109,6 +114,26 @@
         <div class="row mb-5">
           <div class="col text-center"><a class="nes-btn is-primary" href="index.html" role="button">Back to leaderboard</a></div>
         </div>
+        
+        <div class="row mb-5 nes-container is-dark with-title">
+        	<p class="title">HOW TO PLAY</p>
+        	Welcome to TRIVIASPREE, a fast paced quiz game to test your knowledge in different fields.
+        	
+        	<br>
+        	<br>
+        	You will be challenged by numerous mind bending questions and must choose from one of four different answer. 
+        	For these choices we provide you with a modest 120 seconds, so things don't get too boring.
+        	As with everything in life so can also the questions have more than one correct answer. Every correct answer rewards you with 100 points.
+        	Consecutive correct answers build up a combo multiplier for a chance to hexaply your points but be cautious, wrong answers set you back 2 levels.
+        	<br>
+        	<br>
+        	Good luck and have fun ripping and tearing through the questions.
+        	<br>
+        	<br>
+        	<span class="red bold" style="margin-inline: auto;"> BE WARNED</span> 
+        	Mindless mashing will get you nowhere but off the leaderboard. This is a courteous game where speed of mind, not mashing of your index finger is put to the test.
+        </div>
+        
         <div class="row mb-5">
           <div class="col text-center"><a class="nes-btn is-primary" href="index.html" role="button" id="start-game-button">START NEW GAME</a></div>
         </div>
@@ -206,7 +231,8 @@
         </div>
       </div>
       <!-- GAME ENDED -->
-      <div class="pb-5" id="game-ended-content" style="display:none;">
+      <div class="pb-5 nes-container is-dark with-title" id="game-ended-content" style="display:none;">
+      	<p class="title">End results</p>
         <div class="row">
           <div class="col">
             <strong>GAME ENDED!</strong>
@@ -238,7 +264,7 @@
         <form id="game-feedback-form">
           <div class="row justify-content-around">
             <div class="col-xl-4">
-              <textarea class="form-control" id="game-feedback-input" rows="3" placeholder="Give us feedback" required></textarea>
+              <textarea class="form-control nes-textarea" id="game-feedback-input" rows="3" placeholder="Give us feedback" required></textarea>
             </div>
           </div>
           <div class="row mt-1 justify-content-around">
@@ -262,6 +288,7 @@
     </div>
     <div class="col-1 col-xl-2">
       <!-- Responsive spacing on the edges -->
+    </div>
     </div>
 
     <!-- Bootstrap core JavaScript
@@ -311,7 +338,7 @@
       soundTrack4 = createjs.Sound.createInstance('sound-4');
       soundTrack5 = createjs.Sound.createInstance('sound-5');
       soundTrack6 = createjs.Sound.createInstance('sound-6');
-      createjs.Sound.muted = true;
+      createjs.Sound.muted = false;
 
       var audioLoopTimeout = null;
 
@@ -358,7 +385,7 @@
       var progressBar = null;
       var progressBarCountDown = null;
       var gameStartTime = 0;
-      const gameMaxTime = 60000;
+      const gameMaxTime = 120000;
       var gameTotalExtraTime = 0;
       var currentExtraTimeTimeout = null;
       var currentExtraTimeEnd = 0; // This  can change during current extra time runtime
@@ -578,6 +605,8 @@
       }
 
       function endGameSession() {
+    	  
+    	  console.log("ending session...");
 
         jsonPayload = {
           'gameId': gameId
@@ -620,7 +649,19 @@
       }
 
       function endGameErrorCallback(data) {
-        // TODO
+          $('#start-game-content').show();
+          $('#game-started-content').hide();
+          $('#game-ended-content').show();
+          $('#game-feedback-content').show();
+          $('#score-content').text(0);
+          $('progress-bar-countdown').text(0);
+          $('#new-leaderboard-position-content').text("Disqualified");
+          gameTotalExtraTime = 0;
+
+          for (var i = 1; i <= 10; i++) {
+            $('.question-level-indicator-' + i).text('|');
+            $('.question-level-indicator-' + i).hide();
+          }
       }
 
       // Feedback form

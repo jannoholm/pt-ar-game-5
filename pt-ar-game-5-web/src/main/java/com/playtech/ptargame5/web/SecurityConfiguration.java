@@ -57,9 +57,10 @@ public class SecurityConfiguration {
 		protected void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable();
 			http.authorizeRequests().antMatchers("/bg-leaderboard.jpg").permitAll();
-			http
+			http.authorizeRequests().antMatchers("/fonts/retro/**").permitAll();
+			/*http
 					.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-					.formLogin().loginPage("/login.html").permitAll();
+					.formLogin().loginPage("/login.html").permitAll();*/
 		}
 	}
 }
