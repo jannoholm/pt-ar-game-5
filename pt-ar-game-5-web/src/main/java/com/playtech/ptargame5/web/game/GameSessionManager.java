@@ -145,7 +145,7 @@ public class GameSessionManager {
 		response.setCategory(question.getCategory());
 		response.setExtraTimeAdded(question.getExtraTime());
 		response.setLastQuestionCorrect(wasLastAnswerCorrect);
-		response.setLevel(question.getLevel());
+		response.setLevel(calculateMultiplier(session.getQuestionsAnswered()));
 		response.setNewTotalScore(calculateTotalScore(session.getQuestionsAnswered()));
 		response.setQuestion(question.getQuestion());
 
@@ -291,6 +291,20 @@ public class GameSessionManager {
         }
 
 		return totalScore;
+	}
+	
+	private int calculateMultiplier(List<TriviaQuestionResult> answers) {
+		int multiplier = 0;
+		for (TriviaQuestionResult result : answers) {
+			if (result.isCorrect()) {
+				multiplier =  multiplier > 8 ? multiplier : multiplier + 1;
+			}
+			else {
+				multiplier = (multiplier - 2) < 0 ? 0 : multiplier - 2;
+			}
+		}
+		
+		return multiplier;
 	}
 
 	private int calculateCorrectAnswers(List<TriviaQuestionResult> questionsAnswered) {

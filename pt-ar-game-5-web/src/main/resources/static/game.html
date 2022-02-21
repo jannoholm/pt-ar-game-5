@@ -341,6 +341,80 @@
       createjs.Sound.muted = false;
 
       var audioLoopTimeout = null;
+      
+      
+      // start of sound effects
+      const genderSelect = ["male", "female"];
+      
+      let currentGender = "male";
+      
+      const malePrefix = "m_";
+      const femalePrefix = "f_";
+      
+      const correctSoundIds = ["bingo", "yup", "scwing", "mhm", "correct", "great job", "nice", "thats a bingo"];
+      const incorrectSoundIds = ["nope", "ouch", "wrong"];
+      
+      const comboBreakerSoundIds = ["combo breaker", "trivia breaker"];
+      
+      const startSoundIds = ["begin", "get it on", "go", "riddle me this", "start"];
+      const stopSoundIds = ["pencils down", "quiz over", "stop", "thats enough"];
+      
+      const comboSounds = [
+    	  correctSoundIds,
+    	  ["double quiz", "double", "quizing spree"],
+    	  ["tripple", "tripple quizz", "uu baby"],
+    	  ["quad", "quadtacular", "quiztacular", "ultra combo"],
+    	  ["penta", "pentafrenzy", "quizfrenzy", "monsterquiz"],
+    	  ["hexa", "hexatrocity", "quiztrocity", "quizrampage"],
+    	  ["hepta", "heptamanjaro", "quizmanjaro", "quizunstoppable"],
+    	  ["octa", "octastrophy", "quiztrastophy"]
+      ];
+      
+      const maxCombo = ["godlike", "beyond godlike", "ultra combo"];
+      
+      let gameSfx = [];
+	  
+      //registerSound(correctSoundIds, gameSfx);
+      registerSound(incorrectSoundIds, gameSfx);
+      
+      registerSound(startSoundIds, gameSfx);
+      registerSound(stopSoundIds, gameSfx);
+      
+      registerSound(comboBreakerSoundIds, gameSfx);
+      registerSound(maxCombo, gameSfx);
+      
+      for (let s of comboSounds) {
+    	  registerSound(s, gameSfx);
+      }
+      
+      console.log(gameSfx);
+      
+      function registerSound (arr, gameSfx) {
+          for (let i of arr){
+        	  for (let j of ["male", "female"]){
+        		  let payload = {};
+            	  payload.src = "vo/" + j + "/" + i + ".wav";
+            	  payload.id = (j == "male" ? malePrefix : femalePrefix) + i;
+            	  payload.defaultPlayProps = { volume: 1, loop: 0, offset: 0 }
+            	  
+            	  gameSfx.push(payload)
+        	  }
+        	  
+          }
+      }
+      
+      const registeredSounds = createjs.Sound.registerSounds(gameSfx, 'sounds/');
+      
+      function playSound(sound, gender) {
+    	  const genderPrefix = gender == "male" ? malePrefix : femalePrefix;
+    	  createjs.Sound.play(genderPrefix + sound);
+      }
+      
+      function getRandomFromArray(array) {
+    	  return array[Math.floor(Math.random()*array.length)]
+      }
+      
+      //end of sound effects
 
       function startAudio() {
         soundTrack1.play({ volume: 0, loop: -1, offset: 0 });
@@ -479,6 +553,8 @@
 
       function startGame() {
         console.log('Starting game');
+        
+        currentGender = getRandomFromArray(genderSelect);
 
         jsonPayload = {
           'nickname': nickname
@@ -526,6 +602,7 @@
 
       function firstQuestionCallback(data) {
         console.log('Received response', data);
+        playSound(getRandomFromArray(startSoundIds), currentGender);
 
         $('#question-content').text(data.question);
         $('#answer-content-1').text(data.answers[0]);
@@ -571,15 +648,39 @@
 
       }
 
+      let previousCombo = 0;
+      
       function submitAnswerCallback(data) {
         console.log('Received response', data);
+        
+		const lastCorrect = data.lastQuestionCorrect;
+		
+		const currentCombo = data.level;
+        
+        if (lastCorrect) {
+        	
+        	
+        	if (currentCombo > comboSounds.length) {
+        		playSound(getRandomFromArray(maxCombo), currentGender);
+        	} else {
+        		playSound(getRandomFromArray(comboSounds[currentCombo - 1]), currentGender);
+        	}
+        	
+        } else {
+        	if (currentCombo < previousCombo) {
+        		playSound(getRandomFromArray(comboBreakerSoundIds), currentGender);
+        	} else {
+        		playSound(getRandomFromArray(incorrectSoundIds), currentGender);
+        	}
+        	
+        }
 
         $('#question-content').text(data.question);
         $('#answer-content-1').text(data.answers[0]);
         $('#answer-content-2').text(data.answers[1]);
         $('#answer-content-3').text(data.answers[2]);
         $('#answer-content-4').text(data.answers[3]);
-        $('#score-content').text(data.newTotalScore);
+        $('#score-content').text(data.newTotalScore + " COMBO:" + currentCombo);
 
         for (let levelIndicator = 1; levelIndicator <= 10; levelIndicator++) {
           $('.question-level-indicator-' + levelIndicator).text('|');
@@ -597,6 +698,8 @@
         if (extraTime > 0) {
           triggerNewExtraTime(extraTime);
         }
+        
+        previousCombo = currentCombo;
       }
 
       function submitAnswerErrorCallback(data) {
@@ -628,6 +731,9 @@
       }
 
       function endGameCallback(data) {
+    	  
+    	  playSound(getRandomFromArray(stopSoundIds), currentGender);
+    	  previousCombo = 0;
 
         $('#total-score-content').text(data.totalScore);
         $('#questions-attempted-content').text(data.questionsAttempted);
