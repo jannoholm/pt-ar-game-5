@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Connection Serif';
+    src: url('ConnectionSerif.woff2') format('woff2'),
+        url('ConnectionSerif.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

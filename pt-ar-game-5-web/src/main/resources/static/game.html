@@ -73,15 +73,49 @@
       background-size: contain;
       opacity: .95;
     }
+    
+    
+    
+    
+    
+    
+    .cyclic_input {
+    float: left;
+    padding: 1rem;
+    font-size: 5rem;
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.cyclic_input:before,
+.cyclic_input:after {
+    display: block;
+    position: absolute;
+    left: 50%;
+    font-size: 1rem;
+    transform: translateX(-50%);
+}
+
+.cyclic_input:before {
+    content: '▲';
+    top: 0;
+}
+
+.cyclic_input:after {
+    content: '▼';
+    bottom: 0;
+}
   </style>
   
   <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="fonts/retro/stylesheet.css"/>
+  <link rel="stylesheet" href="fonts/barcade/stylesheet.css"/>
   
   
   <style type="text/css">
       html, body, pre, code, kbd, samp {
-          font-family: 'manaspaceregular';
+          font-family: 'Barcade Brawl';
       }
   </style>
 
@@ -112,6 +146,59 @@
           <div class="col text-center"><a class="nes-btn is-primary" href="index.html" role="button">Back to leaderboard</a></div>
         </div>
         
+        <div class="nes-container is-dark with-title">
+        	<p class="title">PLAYER SELECT</p>
+        	<div>
+        		<div class="row mb-1">
+		        		<div class="cyclic_input col" tabindex="0">A</div>
+						<div class="cyclic_input col" tabindex="0">A</div>
+						<div class="cyclic_input col" tabindex="0">A</div>
+	        	</div>
+	        	
+				
+				<div class="row">
+					<div class="col">
+		          		<a class="nes-btn is-disabled" href="index.html" role="button" id="start-game-button" 
+		          		style="
+						    text-align: center;
+						    font-size: 2vh;
+						    width: 25vh;
+						">START</a>
+					</div>
+	        	</div>
+        	</div>
+        </div>
+        
+      <!-- GAME ENDED -->
+      <div class="pb-5 nes-container is-dark with-title" id="game-ended-content" style="display:none;">
+      	<p class="title">End results</p>
+        <div class="row">
+          <div class="col">
+            <strong>GAME ENDED!</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>YOUR SCORE:&nbsp;</strong><strong id="total-score-content">0</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>TOTAL QUESTIONS:&nbsp;</strong><strong id="questions-attempted-content">0</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>CORRECT ANSWERS:&nbsp;</strong><strong id="correct-answers-content">0</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <strong>NEW LEADERBOARD POSITION:&nbsp;</strong><strong id="new-leaderboard-position-content">0</strong>
+          </div>
+        </div>
+      </div>
+        
         <div class="row mb-5 nes-container is-dark with-title">
         	<p class="title">HOW TO PLAY</p>
         	Welcome to TRIVIASPREE, a fast-paced quiz game designed to test your knowledge in various fields.
@@ -132,16 +219,14 @@
         	Mindless mashing will only get you removed from the leaderboard. This is a courteous game where speed of mind, not of the index finger is put to test.
         </div>
         
-        <div class="row mb-5">
-          <div class="col text-center"><a class="nes-btn is-primary" href="index.html" role="button" id="start-game-button">START NEW GAME</a></div>
-        </div>
+        
       </div>
       <!-- GAME STARTED -->
       <div id="game-started-content" style="display:none;">
         <div class="row align-items-end" style="display: table; width: 100%;">
           <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 20%;">
             <p style="font-size: 2vh; color: #009933; display: none;" id="extra-seconds-content">
-              <strong>+<span id="extra-seconds-time">5</span> SECONDS</strong>
+              <strong>+<span id="extra-seconds-time">5</span> S</strong>
             </p>
           </div>
           <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 60%;">
@@ -175,7 +260,7 @@
             </p>
           </div>
           <div class="col-10 align-self-center nes-container is-rounded is-dark">
-            <p style="width: 100%; font-size: 4vh"><strong id="question-content">Question placeholder</strong></p>
+            <p style="width: 100%; font-size: 3vh"><strong id="question-content">Question placeholder</strong></p>
           </div>
           <div class="col-1 align-self-end" style="display: none;">
             <p style="font-size: 2vh;">
@@ -199,14 +284,14 @@
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(226, 27, 60)">
               <div class="col align-self-center">
-                <p style="font-size: 2vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
+                <p style="font-size: 1.5vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(19, 104, 206)">
               <div class="col align-self-center">
-                <p style="font-size: 2vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
+                <p style="font-size: 1.5vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
               </div>
             </div>
           </div>
@@ -215,48 +300,20 @@
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(208, 159, 54)">
               <div class="col align-self-center">
-                <p style="font-size: 2vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
+                <p style="font-size: 1.5vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(38, 137, 12)">
               <div class="col align-self-center">
-                <p style="font-size: 2vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
+                <p style="font-size: 1.5vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- GAME ENDED -->
-      <div class="pb-5 nes-container is-dark with-title" id="game-ended-content" style="display:none;">
-      	<p class="title">End results</p>
-        <div class="row">
-          <div class="col">
-            <strong>GAME ENDED!</strong>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <strong>YOUR SCORE:&nbsp;</strong><strong id="total-score-content">0</strong>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <strong>TOTAL QUESTIONS:&nbsp;</strong><strong id="questions-attempted-content">0</strong>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <strong>CORRECT ANSWERS:&nbsp;</strong><strong id="correct-answers-content">0</strong>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <strong>NEW LEADERBOARD POSITION:&nbsp;</strong><strong id="new-leaderboard-position-content">0</strong>
-          </div>
-        </div>
-      </div>
+
       <!-- GAME ENDED FEEDBACK -->
       <div class="pt-5" style="display:none;" id="game-feedback-content">
         <form id="game-feedback-form">
@@ -307,10 +364,14 @@
 
       feather.replace()
 
-      var nickname = null;
+      let nickname = null;
       var gameId = null;
       var loadingBarStartTime = null;
       var loadingBarId = null;
+      
+      KEYCODES = { up: 49, down: 50, left: 51, right: 52 };
+      
+      
       
       var gameRunning = false;
 
@@ -712,6 +773,15 @@
       function endGameSession() {
     	  
     	  console.log("ending session...");
+    	  
+    	  clearTimeout(audioLoopTimeout);
+          createjs.Sound.stop();
+
+          progressBar.set(0);
+          clearInterval(progressBarCountDown);
+          clearInterval(progressUpdateInterval);
+          
+          previousCombo = 0;
 
         jsonPayload = {
           'gameId': gameId
@@ -734,8 +804,6 @@
 
       function endGameCallback(data) {
     	  gameRunning = false;
-    	  playSound(getRandomFromArray(stopSoundIds), currentGender);
-    	  previousCombo = 0;
 
         $('#total-score-content').text(data.totalScore);
         $('#questions-attempted-content').text(data.questionsAttempted);
@@ -758,6 +826,8 @@
 
       function endGameErrorCallback(data) {
     	  gameRunning = false;
+    	  
+    	  
           $('#start-game-content').show();
           $('#game-started-content').hide();
           $('#game-ended-content').show();
@@ -819,15 +889,98 @@
             height: '100%'
           }
         });
+        
+        
+        var canStart = false;
+        
+        $('.cyclic_input').on('keydown',function(ev){
+      	  console.log("111")
+      	    input = $(this);
+      	    val = $(this).text();
+      	    
+      	    var previousStartState = canStart;
+      	    
+      	    switch (ev.keyCode) {   
+      	      case KEYCODES.right:
+      	    	  let nextEl = input.next();
+      	    	  if (nextEl.length) {
+      	    		nextEl.focus();
+      	    		console.log("got next")
+      	    		canStart = false;
+      	    	  } else {
+      	    		  console.log("nothing more")
+      	    		canStart = true;
+      	    	  }
+      	        break;
+      	      case KEYCODES.left:
+      	    	let prevEl = input.prev();
+      	    	if (prevEl.length) {
+      	    		prevEl.focus();
+      	    		console.log("got prev")
+      	    		canStart = false;
+      	    	  } else {
+      	    		  console.log("nothing more")
+      	    		canStart = true;
+      	    	  }
+      	        break;
+      	      case KEYCODES.up:
+      	        input.text(advanceCharBy(val, 1));
+      	        break;
+      	      case KEYCODES.down:
+      	        input.text(advanceCharBy(val, -1));
+      	        break;
+      	      default:
+      	        if (ev.keyCode >= 65 && ev.keyCode <= 65 + 26) {
+      	            input.text(String.fromCharCode(ev.keyCode));
+      	            input.next().focus();
+      	        }
+      	    };
+      	    
+      	    if (previousStartState && canStart) {
+      	    	var username = "";
+      	    	$(".cyclic_input ").each(function(index, element) {
+      	    		username = username + $(element).text()
+      	    	})
+      	    	
+      	    	console.log("starting game with: ", username)
+      	    	nickname = username;
+      	    	
+      	    	if (!gameRunning) {
+      	    		canStart = false;
+      	    		 $('#start-game-button').click();
+      	    	}
+      	          
+      	    	
+      	    }
+      	    
+      	    if (canStart) {
+      	    	$("#start-game-button").addClass("is-success").removeClass("is-disabled")
+      	    } else {
+      	    	$("#start-game-button").addClass("is-disabled").removeClass("is-success")
+      	    }
+      	    
+      	    ev.preventDefault();
+      	});
+
+      	advanceCharBy = function(char, distance) {
+      	    oldCode = char.charCodeAt(0);
+      	    newCode = 65 + (oldCode - 65 + 26 + distance) % 26;
+      	    return String.fromCharCode(newCode);
+      	};
 
         $(document).keypress(function (e) {
           if (event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4') {
             
             
-            if (!gameRunning)
-            	$('#start-game-button').click();
-            else
-            	$('#answer-content-' + event.key).click();
+            //if (!gameRunning)
+           // 	$('#start-game-button').click();
+            //else
+            	
+            	if (gameRunning)
+            		$('#answer-content-' + event.key).click();
+            	else{
+            		$(".cyclic_input").first().focus();
+            	}
           }
         })
 

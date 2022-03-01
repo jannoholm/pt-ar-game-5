@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Emulogic';
+    src: url('Emulogic.woff2') format('woff2'),
+        url('Emulogic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
