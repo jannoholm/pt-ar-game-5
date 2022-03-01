@@ -251,13 +251,13 @@
 						</td>
 					</tr>
 
-					<tr style="display: none;">
+					<tr>
 						<td>
-							<div class="mb-2 mr-sm-2"
+							<div class="mb-2 mr-sm-2 nes-container is-rounded is-dark"
 								style="color: lightgray; text-align:  left; max-width: 385px; background-color: #0000007d; border-radius: 4px; padding: 5px;">
 								Your information will be stored only for the duration of the contest. Once the contest
 								has concluded, all data will be deleted. You may not enter any personal data, if you so
-								desire.
+								desire. Cookies are used to identify participants of the game.
 							</div>
 						</td>
 					</tr>
@@ -320,7 +320,7 @@
 			function successCallback(data) {
 				console.log("Player added: " + data);
 				Cookies.set("nickname", data.nickname, { expires: 28 });
-				window.location.replace("index.html");
+				window.location.replace("/");
 			}
 
 			function errorCallback(data) {

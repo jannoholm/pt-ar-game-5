@@ -103,35 +103,33 @@
       <!-- SIGNUP FIRST -->
       <div id="signup-first-content" style="display:none;">
         <div class="row mb-5">
-          <div class="col text-center"><a class="btn btn-primary" href="index.html" role="button">Back to leaderboard</a></div>
-        </div>
-        <div class="row mb-5">
-          <div class="col text-center"><a class="btn btn-primary" href="signup.html" role="button">REGISTER USER HERE FIRST</a></div>
+          <div class="col text-center"><a class="btn btn-primary nes-btn is-primary" href="signup.html" role="button">REGISTER USER HERE FIRST</a></div>
         </div>
       </div>
       <!-- START GAME -->
       <div id="start-game-content" style="display:none;">
-        <div class="row mb-5">
+        <div class="row mb-5" style="display:none;">
           <div class="col text-center"><a class="nes-btn is-primary" href="index.html" role="button">Back to leaderboard</a></div>
         </div>
         
         <div class="row mb-5 nes-container is-dark with-title">
         	<p class="title">HOW TO PLAY</p>
-        	Welcome to TRIVIASPREE, a fast paced quiz game to test your knowledge in different fields.
+        	Welcome to TRIVIASPREE, a fast-paced quiz game designed to test your knowledge in various fields.
         	
         	<br>
         	<br>
-        	You will be challenged by numerous mind bending questions and must choose from one of four different answer. 
-        	For these choices we provide you with a modest 120 seconds, so things don't get too boring.
-        	As with everything in life so can also the questions have more than one correct answer. Every correct answer rewards you with 100 points.
-        	Consecutive correct answers build up a combo multiplier for a chance to hexaply your points but be cautious, wrong answers set you back 2 levels.
+        	You will be bombarded by numerous mind-bending questions in fast succession and must choose the correct answer from four different options. 
+        	Your game lasts a modest 120 seconds, so things will move along at a nice tempo. 
+        	As with everything in life, sometimes a question can have several correct answers. 
+        	Every correct answer rewards you with 100 points. Consecutive correct answers build up a combo multiplier for a chance to x8 your points. 
+        	Be warned though, a wrong answer will drop your multiplier by 2 levels.
         	<br>
         	<br>
-        	Good luck and have fun ripping and tearing through the questions.
+        	Good luck and have fun!
         	<br>
         	<br>
         	<span class="red bold" style="margin-inline: auto;"> BE WARNED</span> 
-        	Mindless mashing will get you nowhere but off the leaderboard. This is a courteous game where speed of mind, not mashing of your index finger is put to the test.
+        	Mindless mashing will only get you removed from the leaderboard. This is a courteous game where speed of mind, not of the index finger is put to test.
         </div>
         
         <div class="row mb-5">
@@ -141,19 +139,19 @@
       <!-- GAME STARTED -->
       <div id="game-started-content" style="display:none;">
         <div class="row align-items-end" style="display: table; width: 100%;">
-          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 33%;">
+          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 20%;">
             <p style="font-size: 2vh; color: #009933; display: none;" id="extra-seconds-content">
               <strong>+<span id="extra-seconds-time">5</span> SECONDS</strong>
             </p>
           </div>
-          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 33%;">
+          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 60%;">
             <p class="text-white" style="font-size: 3vh"><strong>SCORE:&nbsp;</strong><strong id="score-content">0</strong></p>
           </div>
-          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 33%;">
+          <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 20%;">
             <p class="text-white" style="font-size: 2vh"><strong>TIME:&nbsp;</strong><strong id="progress-bar-countdown">60</strong></p>
           </div>
         </div>
-        <div class="row mb-5 w-100">
+        <div class="row mb-3 w-100">
           <div class="col text-center w-100">
             <div class="w-100" id="progress-bar-container" style="display: none;"></div>
             <progress id="nes-progress-bar" class="nes-progress is-warning" value="30" max="100"></progress>
@@ -313,6 +311,8 @@
       var gameId = null;
       var loadingBarStartTime = null;
       var loadingBarId = null;
+      
+      var gameRunning = false;
 
       if (Cookies.get('nickname') != undefined && Cookies.get('nickname').length == 3) {
         nickname = Cookies.get('nickname');
@@ -471,7 +471,6 @@
     	  
     	progBar[0].setAttribute("value", 0);
     	progressUpdateInterval = window.setInterval(function(){
-    		  console.log("update here!", Math.round(progressBar.value()*100));
     		  progBar[0].setAttribute("value", Math.round(progressBar.value()*100));
     	}, 100);
 
@@ -554,6 +553,7 @@
       function startGame() {
         console.log('Starting game');
         
+        
         currentGender = getRandomFromArray(genderSelect);
 
         jsonPayload = {
@@ -575,12 +575,14 @@
 
       function startGameCallback(data) {
         console.log('Received response', data);
+        gameRunning = true;
         gameId = data.gameId;
         firstQuestion();
       }
 
       function startGameErrorCallback(data) {
         console.log('Something went wrong!', data);
+        gameRunning = false;
       }
 
       function firstQuestion() {
@@ -614,7 +616,7 @@
         $('#start-game-content').hide();
         $('#game-started-content').show();
         $('#game-ended-content').hide();
-        $('#game-feedback-content').hide();
+        //$('#game-feedback-content').hide();
 
         gameStartTime = Date.now();
         startAudio();
@@ -731,7 +733,7 @@
       }
 
       function endGameCallback(data) {
-    	  
+    	  gameRunning = false;
     	  playSound(getRandomFromArray(stopSoundIds), currentGender);
     	  previousCombo = 0;
 
@@ -743,7 +745,7 @@
         $('#start-game-content').show();
         $('#game-started-content').hide();
         $('#game-ended-content').show();
-        $('#game-feedback-content').show();
+        //$('#game-feedback-content').show();
         $('#score-content').text(0);
         $('progress-bar-countdown').text(0);
         gameTotalExtraTime = 0;
@@ -755,10 +757,11 @@
       }
 
       function endGameErrorCallback(data) {
+    	  gameRunning = false;
           $('#start-game-content').show();
           $('#game-started-content').hide();
           $('#game-ended-content').show();
-          $('#game-feedback-content').show();
+          //$('#game-feedback-content').show();
           $('#score-content').text(0);
           $('progress-bar-countdown').text(0);
           $('#new-leaderboard-position-content').text("Disqualified");
@@ -819,7 +822,12 @@
 
         $(document).keypress(function (e) {
           if (event.key == '1' || event.key == '2' || event.key == '3' || event.key == '4') {
-            $('#answer-content-' + event.key).click();
+            
+            
+            if (!gameRunning)
+            	$('#start-game-button').click();
+            else
+            	$('#answer-content-' + event.key).click();
           }
         })
 

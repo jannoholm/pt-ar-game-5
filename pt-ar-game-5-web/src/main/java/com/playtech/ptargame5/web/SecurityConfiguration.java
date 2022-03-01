@@ -58,9 +58,13 @@ public class SecurityConfiguration {
 			http.csrf().disable();
 			http.authorizeRequests().antMatchers("/bg-leaderboard.jpg").permitAll();
 			http.authorizeRequests().antMatchers("/fonts/retro/**").permitAll();
-			/*http
+			http.authorizeRequests().antMatchers("/").permitAll();
+			http.authorizeRequests().antMatchers("/signup.html").permitAll();
+			http.authorizeRequests().antMatchers("/api/leaderboard").permitAll();
+			http.authorizeRequests().antMatchers("/api/player").permitAll();
+			http
 					.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-					.formLogin().loginPage("/login.html").permitAll();*/
+					.formLogin().loginPage("/login.html").permitAll();
 		}
 	}
 }
