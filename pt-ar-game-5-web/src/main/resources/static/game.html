@@ -281,7 +281,7 @@
             </p>
           </div>
           <div class="col-10 align-self-center nes-container is-rounded is-dark">
-            <p style="width: 100%; font-size: 3vh"><strong id="question-content">Question placeholder</strong></p>
+            <p style="width: 100%; font-size: 2.5vh; word-break: break-word;"><strong id="question-content">Question placeholder</strong></p>
           </div>
           <div class="col-1 align-self-end" style="display: none;">
             <p style="font-size: 2vh;">
@@ -305,14 +305,14 @@
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(226, 27, 60)">
               <div class="col align-self-center">
-                <p style="font-size: 1.2vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
+                <p style="font-size: 1.2vh; word-break: break-word;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(19, 104, 206)">
               <div class="col align-self-center">
-                <p style="font-size: 1.2vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
+                <p style="font-size: 1.2vh; word-break: break-word;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
               </div>
             </div>
           </div>
@@ -321,14 +321,14 @@
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(208, 159, 54)">
               <div class="col align-self-center">
-                <p style="font-size: 1.2vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
+                <p style="font-size: 1.2vh; word-break: break-word;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(38, 137, 12)">
               <div class="col align-self-center">
-                <p style="font-size: 1.2vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
+                <p style="font-size: 1.2vh; word-break: break-word;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
               </div>
             </div>
           </div>
@@ -389,6 +389,8 @@
       var gameId = null;
       var loadingBarStartTime = null;
       var loadingBarId = null;
+      
+      let submittingQuestion = false;
       
       KEYCODES = { up: 50, down: 49, left: 51, right: 52 };
       
@@ -713,28 +715,37 @@
       }
 
       function submitAnswer(answer) {
+    	  
+    	  if (!submittingQuestion) {
 
-        jsonPayload = {
-          'gameId': gameId,
-          'lastQuestionAnswer': answer
-        }
-
-        // Post the data to the server
-        $.ajax({
-          type: 'POST',
-          url: 'api/gamesession/next',
-          contentType: 'application/json; charset=utf-8',
-          data: JSON.stringify(jsonPayload),
-          success: submitAnswerCallback,
-          error: submitAnswerErrorCallback,
-          dataType: 'json'
-        });
+	        jsonPayload = {
+	          'gameId': gameId,
+	          'lastQuestionAnswer': answer
+	        }
+	        
+	        submittingQuestion = true;
+	
+	        // Post the data to the server
+	        $.ajax({
+	          type: 'POST',
+	          url: 'api/gamesession/next',
+	          contentType: 'application/json; charset=utf-8',
+	          data: JSON.stringify(jsonPayload),
+	          success: submitAnswerCallback,
+	          error: submitAnswerErrorCallback,
+	          dataType: 'json'
+	        });
+        
+        
+    	  }
 
       }
 
       let previousCombo = 0;
       
       function submitAnswerCallback(data) {
+    	  submittingQuestion = false;
+    	  
         console.log('Received response', data);
         
 		const lastCorrect = data.lastQuestionCorrect;
@@ -788,6 +799,9 @@
 
       function submitAnswerErrorCallback(data) {
         console.log('Something went wrong!', data);
+        
+        submittingQuestion = false;
+        
         endGameSession();
       }
 
@@ -801,6 +815,8 @@
           progressBar.set(0);
           clearInterval(progressBarCountDown);
           clearInterval(progressUpdateInterval);
+          
+          submittingQuestion = false;
           
           $(".cyclic_input ").each(function(index, element) {
 	    		$(element).text("A")
