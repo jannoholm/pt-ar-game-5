@@ -9,13 +9,14 @@ import io.jsondb.annotation.Id;
 
 @Document(collection = "games", schemaVersion = "1.0")
 public class GameResult implements Comparable<GameResult> {
-
+  public static final int BUTTON_MASH_THRESHOLD = 23;
+  
 	@Id
 	private String gameId;
 	private String nickname;
-	private Integer questionsAttempted;
-	private Integer correctAnswers;
-	private Integer totalScore;
+	private int questionsAttempted;
+	private int correctAnswers;
+	private int totalScore;
 	long time;
 	private List<GameResultAnswer> answers;
 	
@@ -39,27 +40,27 @@ public class GameResult implements Comparable<GameResult> {
 		this.nickname = nickname;
 	}
 
-	public Integer getQuestionsAttempted() {
+	public int getQuestionsAttempted() {
 		return questionsAttempted;
 	}
 
-	public void setQuestionsAttempted(Integer questionsAttempted) {
+	public void setQuestionsAttempted(int questionsAttempted) {
 		this.questionsAttempted = questionsAttempted;
 	}
 
-	public Integer getCorrectAnswers() {
+	public int getCorrectAnswers() {
 		return correctAnswers;
 	}
 
-	public void setCorrectAnswers(Integer correctAnswers) {
+	public void setCorrectAnswers(int correctAnswers) {
 		this.correctAnswers = correctAnswers;
 	}
 
-	public Integer getTotalScore() {
+	public int getTotalScore() {
 		return totalScore;
 	}
 
-	public void setTotalScore(Integer totalScore) {
+	public void setTotalScore(int totalScore) {
 		this.totalScore = totalScore;
 	}
 

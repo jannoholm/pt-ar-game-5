@@ -39,15 +39,14 @@ public class PlayerController {
 
 		Assert.hasText(player.getNickname(), "Nickname is required");
 		Assert.isTrue(player.getNickname().matches("[A-Z]{3}"), "Nickname has to be 3 capital letters");
-
+		if ("aaa".equalsIgnoreCase(player.getNickname())){
+		  throw new IllegalArgumentException("AAA is banned!");
+		}
+		
 		Assert.hasText(player.getEmail(), "Email is required");
 		Assert.isTrue(player.getEmail().length() < 400, "Email is too long");
 
-		if (player.getNickname().equalsIgnoreCase("DMO")) {
-			player.setInternal(true);
-		} else if (player.getInternal()) {
-			player.setInternal(false);
-		}
+		player.setInternal("DMO".equalsIgnoreCase(player.getNickname()));
 
 		db.addPlayer(player);
 

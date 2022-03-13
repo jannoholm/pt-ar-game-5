@@ -1,14 +1,16 @@
 package com.playtech.ptargame5.web.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.ListIterator;
 
 import javax.annotation.PostConstruct;
 
@@ -43,9 +45,9 @@ public class GameSessionManager {
 	private Random r = new Random();
 
 	private List<TriviaQuestion> questions;
-	private Map<Integer, List<TriviaQuestion>> questionsPerLevel = new HashMap<>();
+	private Map<Integer, List<TriviaQuestion>> questionsPerLevel = new LinkedHashMap<>();
 
-	private Map<String, GameSessionData> sessions = new HashMap<>();
+	private Map<String, GameSessionData> sessions = new LinkedHashMap<>();
 	
 	public static final int GAME_LENGTH_SECONDS = 120;
 	public static final int MAX_QUESTIONS_PER_GAME = GAME_LENGTH_SECONDS;
@@ -204,7 +206,9 @@ public class GameSessionManager {
 
 		return response;
 	}
-
+	
+	private static final TriviaQuestion[] EMPTY={};
+	static final String showCaseCategory = System.getProperty("showCaseCategory");
 	private TriviaQuestion getNextQuestion(boolean wasLastAnswerCorrect, GameSessionData session) {
 
 		int nextQuestionLevel = 1;
@@ -223,74 +227,97 @@ public class GameSessionManager {
 			}
 		}
 		
-		List<TriviaQuestion> poolOfQuestions = new ArrayList<>();
+		final String showCase = r.nextInt(8) == 0 ? showCaseCategory : null;
+			
 		
 		for (int i = 0; i < 12; i++) {
 			// An easy naive way to get rid of duplicate questions: create a clone list and remove them
-			poolOfQuestions = new ArrayList<>(questionsPerLevel.get(nextQuestionLevel));
+			Collection<TriviaQuestion> poolOfQuestions = new LinkedHashSet<>(questionsPerLevel.get(nextQuestionLevel));
 			
-			List<TriviaQuestion> correctAnswers = session.getQuestionsAnswered().stream()
+			session.getQuestionsAnswered().stream()
 					.filter(e -> e.getQuestion().getCorrect().contains(e.getPlayerInput()))
 					.map(TriviaQuestionResult::getQuestion)
-					.collect(Collectors.toList());
+					.forEach(poolOfQuestions::remove);
+
+		  if (showCase != null){
+		    poolOfQuestions.removeIf(question -> !showCase.equals(question.getCategory()));
+		  }		  
+
+		  else if (session.getPlayer().getInterests() == null || !session.getPlayer().getInterests().getDevelopment()) {
+	      // If player is not interested in development, skip questions related to development
+		    poolOfQuestions.removeIf(question -> question.getCategory().equals("Software Development"));
+	    }
 			
-			poolOfQuestions.removeAll(correctAnswers);
-			
-			if (poolOfQuestions.size() == 0) {
+			if (poolOfQuestions.isEmpty()) {
 				//in case we overflow the question level return to the beginning
 				if (nextQuestionLevel > 10)
 					nextQuestionLevel = 0;
 				else
 					nextQuestionLevel ++;
-				continue;
-			}
 				
+				continue;
+			} 
+			
+			return poolOfQuestions.toArray(EMPTY)[r.nextInt(poolOfQuestions.size())];					
 		}
-		
-
-		// If player is not interested in development, skip questions related to development
-		if (session.getPlayer().getInterests() == null || !session.getPlayer().getInterests().getDevelopment()) {
-			poolOfQuestions.removeIf(question -> question.getCategory().equals("Software Development"));
+		//weird?!?
+		for (Collection<TriviaQuestion> c : questionsPerLevel.values()){
+		  for (TriviaQuestion q : c){
+		    if (!session.getQuestionsAsked().contains(q)){//1st not asked
+		      return q;
+		    }
+		  }
 		}
-
-		/*
-		if (poolOfQuestions.size() < 1) {
-			// If for some obscure reason we run out of questions, fallback to default list
-			poolOfQuestions = questionsPerLevel.get(nextQuestionLevel > 1 ? nextQuestionLevel - 1: nextQuestionLevel);
-		}
-		*/
-
-		return poolOfQuestions.get(r.nextInt(poolOfQuestions.size()));
+		//we can return any question, all of them have been asked already
+		throw new IllegalStateException("too many questions, too much time");		
 	}
+	
 
 	private int calculateTotalScore(List<TriviaQuestionResult> answers) {
+	  int totalScore = 0;
 
-		int totalScore = 0;
-
-		/*
+	  /*
 		// This could be optimized by storing latest score and just adding last question score on top
 		for (TriviaQuestionResult result : answers) {
 			if (result.isCorrect()) {
 				totalScore += result.getQuestion().getLevel() * result.getQuestion().getLevel() * 100;
 			}
 		}
-		*/
-		
-		// reverse iterate to find combo
-		ListIterator<TriviaQuestionResult> itr = answers.listIterator(answers.size());
-		int multiplier = 0;
-		while (itr.hasPrevious()) {
-            TriviaQuestionResult result = itr.previous();
-                        
-			if (result.isCorrect()) {
-				multiplier =  multiplier > 8 ? multiplier : multiplier + 1;
-				totalScore += multiplier * 100;
-			} else {
-				multiplier = multiplier - 2 < 0 ? 0 : multiplier - 2;
-			}
-        }
+	   */
 
-		return totalScore;
+	  // reverse iterate to find combo
+	  ListIterator<TriviaQuestionResult> itr = answers.listIterator(answers.size());
+	  int multiplier = 0;
+	  int correct = 0;
+	  while (itr.hasPrevious()) {
+	    TriviaQuestionResult result = itr.previous();
+
+	    if (result.isCorrect()) {
+	      multiplier =  multiplier > 8 ? multiplier : multiplier + 1;
+	      totalScore += multiplier * 100;
+	      correct++;
+	    } else {
+	      multiplier = multiplier - 2 < 0 ? 0 : multiplier - 2;
+	    }
+	  }
+
+	  //S. Simeonoff  - penalty for button mash	  
+	  if (answers.size() > GameResult.BUTTON_MASH_THRESHOLD && correct > 0){
+	    float c = correct;
+	    c /= answers.size();
+	    c -=.3;
+	    if (c < 0){
+	      c*=-100;
+	      int idx = (int) c;
+
+	       int[] penalty = {1, 2, 4, 5, 7, 13};//each missing percent increases penalty, up to 13%
+	       idx = Math.max(0, Math.min(idx, penalty.length-1));
+	       totalScore *= 100- penalty[idx];
+	       totalScore /= 100;	           	      
+	    }	    	   
+	  }
+	  
+	  return totalScore;
 	}
 	
 	private int calculateMultiplier(List<TriviaQuestionResult> answers) {

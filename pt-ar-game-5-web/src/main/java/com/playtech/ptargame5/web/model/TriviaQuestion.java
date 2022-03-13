@@ -26,11 +26,11 @@ public class TriviaQuestion {
 		this.question = question;
 	}
 
-	public Integer getLevel() {
+	public int getLevel() {
 		return level;
 	}
 
-	public void setLevel(Integer level) {
+	public void setLevel(int level) {
 		this.level = level;
 	}
 

@@ -5,12 +5,12 @@ import com.playtech.ptargame5.web.LogUtils;
 public class GameResultAnswer {
 
 	private String question;
-	private int level;
+	private int level  = 1;
 	private String category;
-	private Boolean answeredCorrectly;
+	private boolean answeredCorrectly;
 	private String correctAnswer;
 	private String playerInput;
-	private Long timeTaken;
+	private long timeTaken;
 
 	public String getQuestion() {
 		return question;
@@ -36,11 +36,11 @@ public class GameResultAnswer {
 		this.category = category;
 	}
 
-	public Boolean getAnsweredCorrectly() {
+	public boolean getAnsweredCorrectly() {
 		return answeredCorrectly;
 	}
 
-	public void setAnsweredCorrectly(Boolean answeredCorrectly) {
+	public void setAnsweredCorrectly(boolean answeredCorrectly) {
 		this.answeredCorrectly = answeredCorrectly;
 	}
 
@@ -60,11 +60,11 @@ public class GameResultAnswer {
 		this.playerInput = playerInput;
 	}
 
-	public Long getTimeTaken() {
+	public long getTimeTaken() {
 		return timeTaken;
 	}
 
-	public void setTimeTaken(Long timeTaken) {
+	public void setTimeTaken(long timeTaken) {
 		this.timeTaken = timeTaken;
 	}
 

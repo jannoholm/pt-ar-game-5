@@ -37,6 +37,9 @@ public class GameSessionController {
 
 		Assert.hasText(request.getNickname(), "Nickname is required");
 		Assert.isTrue(request.getNickname().length() < 400, "Nickname is too long");
+		if ("aaa".equalsIgnoreCase(request.getNickname())){
+		  throw new IllegalArgumentException("AAA is banned!");
+		}
 		
 		Player player = db.findPlayer(request.getNickname());
 		
