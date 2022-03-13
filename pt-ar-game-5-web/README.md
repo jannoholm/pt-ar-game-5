@@ -11,3 +11,10 @@
   * Provide user data for cabin player selection
   * Provide trivia questions to cabin
   * Store and manage game results
+
+  
+  
+## Notes
+command line param -DshowCaseCategory=Playtech
+com.playtech.ptargame5.web.game.GameSessionManager can change the default:
+static final String showCaseCategory = System.getProperty("showCaseCategory");
