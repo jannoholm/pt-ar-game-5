@@ -99,13 +99,19 @@
 }
 
 .cyclic_input:before {
-    content: '▲';
+    content: '>';
     top: 0;
+    color: #007bff;
+    transform: rotate(270deg);
+    margin-left: -15px;
 }
 
 .cyclic_input:after {
-    content: '▼';
+    content: '<';
     bottom: 0;
+    color: #dc3545;
+    transform: rotate(-90deg);
+    margin-left: -15px;
 }
   </style>
   
@@ -157,13 +163,25 @@
 	        	
 				
 				<div class="row">
+					<div class="col" style="
+						    font-size: 2vh;
+						    color: #ffc107;
+						">
+						&#x3C;
+					</div>
 					<div class="col">
 		          		<a class="nes-btn is-disabled" href="index.html" role="button" id="start-game-button" 
 		          		style="
 						    text-align: center;
 						    font-size: 2vh;
-						    width: 25vh;
-						">START</a>
+						    width: 32vh;
+						">AGAIN TO START</a>
+					</div>
+					<div class="col" style="
+						    font-size: 2vh;
+						    color: #28a745;
+						">
+						&#x3E;
 					</div>
 	        	</div>
         	</div>
@@ -230,10 +248,13 @@
             </p>
           </div>
           <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 60%;">
-            <p class="text-white" style="font-size: 3vh"><strong>SCORE:&nbsp;</strong><strong id="score-content">0</strong></p>
+            <p class="text-white" style="font-size: 2vh"><strong>SCORE:&nbsp;</strong><strong id="score-content">0</strong></p>
           </div>
           <div class="col nes-container is-rounded is-dark" style="display: table-cell;    width: 20%;">
-            <p class="text-white" style="font-size: 2vh"><strong>TIME:&nbsp;</strong><strong id="progress-bar-countdown">60</strong></p>
+            
+            <strong class="row"><div class="col">TIME:&nbsp;</div></strong>
+            <strong class="row" ><div id="progress-bar-countdown" class="col">60</div></strong>
+            
           </div>
         </div>
         <div class="row mb-3 w-100">
@@ -284,14 +305,14 @@
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(226, 27, 60)">
               <div class="col align-self-center">
-                <p style="font-size: 1.5vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
+                <p style="font-size: 1.2vh;"><strong id="answer-content-1">Answer placeholder 1</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(19, 104, 206)">
               <div class="col align-self-center">
-                <p style="font-size: 1.5vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
+                <p style="font-size: 1.2vh;"><strong id="answer-content-2">Answer placeholder 2</strong></p>
               </div>
             </div>
           </div>
@@ -300,14 +321,14 @@
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(208, 159, 54)">
               <div class="col align-self-center">
-                <p style="font-size: 1.5vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
+                <p style="font-size: 1.2vh;"><strong id="answer-content-3">Answer placeholder 3</strong></p>
               </div>
             </div>
           </div>
           <div class="col-6">
             <div class="row answer-button-content nes-container is-rounded" style="background: rgb(38, 137, 12)">
               <div class="col align-self-center">
-                <p style="font-size: 1.5vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
+                <p style="font-size: 1.2vh;"><strong id="answer-content-4">Answer placeholder 4</strong></p>
               </div>
             </div>
           </div>
@@ -369,7 +390,7 @@
       var loadingBarStartTime = null;
       var loadingBarId = null;
       
-      KEYCODES = { up: 49, down: 50, left: 51, right: 52 };
+      KEYCODES = { up: 50, down: 49, left: 51, right: 52 };
       
       
       
@@ -781,6 +802,10 @@
           clearInterval(progressBarCountDown);
           clearInterval(progressUpdateInterval);
           
+          $(".cyclic_input ").each(function(index, element) {
+	    		$(element).text("A")
+	    	})
+          
           previousCombo = 0;
 
         jsonPayload = {
@@ -900,6 +925,8 @@
       	    
       	    var previousStartState = canStart;
       	    
+      	    var exitSide = 0;
+      	    
       	    switch (ev.keyCode) {   
       	      case KEYCODES.right:
       	    	  let nextEl = input.next();
@@ -910,6 +937,7 @@
       	    	  } else {
       	    		  console.log("nothing more")
       	    		canStart = true;
+      	    		exitSide = 1;
       	    	  }
       	        break;
       	      case KEYCODES.left:
@@ -921,6 +949,7 @@
       	    	  } else {
       	    		  console.log("nothing more")
       	    		canStart = true;
+      	    		exitSide = -1;
       	    	  }
       	        break;
       	      case KEYCODES.up:
@@ -954,9 +983,14 @@
       	    }
       	    
       	    if (canStart) {
-      	    	$("#start-game-button").addClass("is-success").removeClass("is-disabled")
+      	    	$("#start-game-button").removeClass("is-disabled")
+      	    	if (exitSide === -1)
+      	    		$("#start-game-button").addClass("is-warning")
+      	    	else if (exitSide === 1)
+      	    		$("#start-game-button").addClass("is-success")
+      	    	
       	    } else {
-      	    	$("#start-game-button").addClass("is-disabled").removeClass("is-success")
+      	    	$("#start-game-button").addClass("is-disabled").removeClass("is-success").removeClass("is-warning")
       	    }
       	    
       	    ev.preventDefault();
